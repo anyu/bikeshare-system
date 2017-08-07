@@ -8,14 +8,14 @@ const http = require("http");
 const app = express();
 
 const db = require('./../db/config');  
-const memberRoute = require('./routes/members');
+const routes = require('./routes');
 
 const PORT = process.env.PORT || 3000;
 
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.static(path.join(__dirname, '../public/')));   // Serve up static files 
-app.use('/members', memberRoute);
 
+app.use('/api', routes.api);
 
 app.listen(PORT, () => {
   console.log(`Listening on port ${PORT}`);

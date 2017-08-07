@@ -14,5 +14,7 @@ router.route('/')
     res.status(201).send({ data: 'Posted' });
   });
 
+router.route('/members').get(MemberController.getAll);
+
 
 module.exports = router;
