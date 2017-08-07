@@ -1,8 +1,4 @@
-const mysql = require('mysql');
-
-exports.dbConnection = mysql.createConnection({
-  host: process.env.DB_HOST,
-  user: process.env.DB_USERNAME,
-  password: process.env.DB_PASSWORD,
-  database: process.env.DB_DATABASE
-});
+'use strict';
+const knex = require('knex')(require('../knexfile'));
+const bookshelf = require('bookshelf')(knex);
+module.exports = bookshelf;
