@@ -1,7 +1,11 @@
 'use strict';
 const bookshelf = require('../config');
 
+bookshelf.plugin('registry');
+bookshelf.plugin('pagination');
+
 const Member = bookshelf.Model.extend({
   tableName: 'members',
 });
-module.exports = Member;
+module.exports = bookshelf.model('Member', Member);
+
