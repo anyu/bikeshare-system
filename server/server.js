@@ -8,7 +8,7 @@ const http = require("http");
 const app = express();
 
 const db = require('./../db/config');  
-const memberRoute = require('./routes/member');
+const memberRoute = require('./routes/members');
 
 const PORT = process.env.PORT || 3000;
 
