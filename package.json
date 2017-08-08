@@ -4,7 +4,7 @@
   "description": "Bike share system",
   "main": "index.js",
   "scripts": {
-    "start": "node server/server",
+    "start": "nodemon server/server",
     "build": "webpack --watch",
     "migrate": "knex migrate:latest"
   },
