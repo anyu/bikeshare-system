@@ -6,8 +6,8 @@ module.exports.getAllMembers = (req, res) => {
     .then(members => {
       res.status(200).json({members});
     })
-    .catch(err => {
-      res.status(503).send(err);
+    .catch((err) => {
+      res.sendStatus(404);
     });
 };
 
@@ -18,12 +18,9 @@ module.exports.addMember = (req, res) => {
     email: req.body.email
   }).save()
     .then((saved) => {
-      res.status(200).json({saved});
+      res.status(201).json({saved});
     })
-    .error(err => {
-      res.status(500).send(err);
-    })
-    .catch(() => {
+    .catch((err) => {
       res.sendStatus(404);
     });
 };
@@ -36,10 +33,7 @@ module.exports.getMember = (req, res) => {
       }
       res.status(200).json({member});
     })
-    .error(err => {
-      res.status(500).send(err);
-    })
-    .catch(() => {
+    .catch((err) => {
       res.sendStatus(404);
     });
 };
@@ -55,23 +49,17 @@ module.exports.updateMember = (req, res) => {
     .then(() => {
       res.sendStatus(201);
     })
-    .error(err => {
-      res.status(500).send(err);
-    })
-    .catch(() => {
+    .catch((err) => {
       res.sendStatus(404);
     });
 };
 
 module.exports.deleteMember = (req, res) => {
   models.Member.where({ id: req.params.id }).destroy()
-    .then((destroyed) => {
-      res.status(200).json({destroyed});
+    .then(() => {
+      res.sendStatus(200);
     })
-    .error(err => {
-      res.status(500).send(err);
-    })
-    .catch(() => {
+    .catch((err) => {
       res.sendStatus(404);
     });
 };
