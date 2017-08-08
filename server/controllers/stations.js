@@ -1,0 +1,65 @@
+const models = require('../../db/models');
+const knex = require('../../db/config').knex;
+
+module.exports.getAllStations = (req, res) => {
+  models.Station.fetchAll()
+    .then(stations => {
+      res.status(200).json({stations});
+    })
+    .catch((err) => {
+      res.sendStatus(404);
+    });
+};
+
+module.exports.addStation = (req, res) => {
+  models.Station.forge({
+    firstName: req.body.firstName,
+    lastName: req.body.lastName,
+    email: req.body.email
+  }).save()
+    .then((saved) => {
+      res.status(201).json({saved});
+    })
+    .catch((err) => {
+      res.sendStatus(404);
+    });
+};
+
+module.exports.getStation = (req, res) => {
+  models.Station.where({ id: req.params.id }).fetch()
+    .then(station => {
+      if (!station) {
+        throw station;
+      }
+      res.status(200).json({station});
+    })
+    .catch((err) => {
+      res.sendStatus(404);
+    });
+};
+
+module.exports.updateStation = (req, res) => {
+  models.Station.where({ id: req.params.id }).fetch()
+    .then(station => {
+      if (!station) {
+        throw station;
+      }
+      return station.save(req.body, { method: 'update' });
+    })
+    .then(() => {
+      res.sendStatus(201);
+    })
+    .catch((err) => {
+      res.sendStatus(404);
+    });
+};
+
+module.exports.deleteStation = (req, res) => {
+  models.Station.where({ id: req.params.id }).destroy()
+    .then(() => {
+      res.sendStatus(200);
+    })
+    .catch((err) => {
+      res.sendStatus(404);
+    });
+};

@@ -3,7 +3,7 @@ const knex = require('../../db/config').knex;
 
 module.exports.getAllMembers = (req, res) => {
   models.Member.fetchAll()
-    .then(members => {
+    .then((members) => {
       res.status(200).json({members});
     })
     .catch((err) => {
@@ -27,7 +27,7 @@ module.exports.addMember = (req, res) => {
 
 module.exports.getMember = (req, res) => {
   models.Member.where({ id: req.params.id }).fetch()
-    .then(member => {
+    .then((member) => {
       if (!member) {
         throw member;
       }
@@ -40,7 +40,7 @@ module.exports.getMember = (req, res) => {
 
 module.exports.updateMember = (req, res) => {
   models.Member.where({ id: req.params.id }).fetch()
-    .then(member => {
+    .then((member) => {
       if (!member) {
         throw member;
       }
