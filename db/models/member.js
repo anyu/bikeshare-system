@@ -5,7 +5,10 @@ bookshelf.plugin('registry');
 bookshelf.plugin('pagination');
 
 const Member = bookshelf.Model.extend({
-  tableName: 'members',
+  tableName: 'members',  
+  bike: function() {
+    return this.hasOne('Bike');
+  }
 });
 module.exports = bookshelf.model('Member', Member);
 
