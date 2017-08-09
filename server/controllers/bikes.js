@@ -39,6 +39,8 @@ module.exports.getBike = (req, res) => {
     });
 };
 
+/***************************************** TO CHECK *********************************************/
+
 module.exports.updateBike = (req, res) => {
   models.Bike.where({ id: req.params.id }).fetch()
     .then((bike) => {
@@ -64,9 +66,10 @@ module.exports.deleteBike = (req, res) => {
       res.sendStatus(404);
     });
 };
+/***************************************** TO CHECK ends *****************************************/
 
 
-// TODO
+/***************************************** TODO *************************************************/
 module.exports.rentBike = (req, res) => {
   models.Bike.where({ id: req.params.id }).fetch()
     .then((bike) => {
@@ -80,7 +83,6 @@ module.exports.rentBike = (req, res) => {
     });
 };
 
-// TODO
 module.exports.returnBike = (req, res) => {
   models.Bike.where({ id: req.params.id }).fetch()
     .then((bike) => {
@@ -93,43 +95,32 @@ module.exports.returnBike = (req, res) => {
       res.sendStatus(404);
     });
 };
+/***************************************** TODO ends *************************************************/
 
-// TODO
 module.exports.checkAvailability = (req, res) => {
-  models.Bike.where({ id: req.params.id }).fetch()
-    .then((bike) => {
-      if (!bike) {
-        throw bike;
-      }
-      res.status(200).json({bike});
+  models.Bike.where({ id: req.params.id }).fetch({ columns: ['is_available'] })
+    .then((bikeAvailability) => {
+      res.status(200).json({bikeAvailability});
     })
     .catch((err) => {
       res.sendStatus(404);
     });
 };
 
-// TODO
-module.exports.checkDockingStation = (req, res) => {
-  models.Bike.where({ id: req.params.id }).fetch()
-    .then((bike) => {
-      if (!bike) {
-        throw bike;
-      }
-      res.status(200).json({bike});
+module.exports.checkDockedStation = (req, res) => {
+  models.Bike.where({ id: req.params.id }).fetch({ columns: ['docked_station_id'] })
+    .then((bikeDockedStation) => {
+      res.status(200).json({bikeDockedStation});
     })
     .catch((err) => {
       res.sendStatus(404);
     });
 };
 
-// TODO
 module.exports.checkLastRider = (req, res) => {
-  models.Bike.where({ id: req.params.id }).fetch()
-    .then((bike) => {
-      if (!bike) {
-        throw bike;
-      }
-      res.status(200).json({bike});
+  models.Bike.where({ id: req.params.id }).fetch({ columns: ['last_rider'] })
+    .then((bikeLastRider) => {
+      res.status(200).json({bikeLastRider});
     })
     .catch((err) => {
       res.sendStatus(404);

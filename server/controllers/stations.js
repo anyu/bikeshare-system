@@ -38,6 +38,7 @@ module.exports.getStation = (req, res) => {
     });
 };
 
+/***************************************** TO CHECK *************************************************/
 module.exports.updateStation = (req, res) => {
   models.Station.where({ id: req.params.id }).fetch()
     .then(station => {
@@ -63,42 +64,33 @@ module.exports.deleteStation = (req, res) => {
       res.sendStatus(404);
     });
 };
+/***************************************** TO CHECK ends *************************************************/
 
-// TODO
 module.exports.checkBikeCount = (req, res) => {
-  models.Station.where({ id: req.params.id }).fetch()
-    .then(station => {
-      if (!station) {
-        throw station;
-      }
-      res.status(200).json({station});
+  models.Station.where({ id: req.params.id }).fetch({ columns: ['bike_count'] })
+    .then((stationBikeCount) => {
+      res.status(200).json({stationBikeCount});
     })
     .catch((err) => {
       res.sendStatus(404);
     });
 };
 
-// TODO
+/***************************************** TODO *************************************************/
 module.exports.checkBikes = (req, res) => {
   models.Station.where({ id: req.params.id }).fetch()
-    .then(station => {
-      if (!station) {
-        throw station;
-      }
+    .then((station) => {
       res.status(200).json({station});
     })
     .catch((err) => {
       res.sendStatus(404);
     });
 };
+/***************************************** TODO ends *************************************************/
 
-// TODO
 module.exports.checkVolume = (req, res) => {
-  models.Station.where({ id: req.params.id }).fetch()
+  models.Station.where({ id: req.params.id }).fetch({ columns: ['percent_full'] })
     .then(station => {
-      if (!station) {
-        throw station;
-      }
       res.status(200).json({station});
     })
     .catch((err) => {

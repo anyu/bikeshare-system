@@ -15,7 +15,9 @@ module.exports.addMember = (req, res) => {
   models.Member.forge({
     firstName: req.body.firstName,
     lastName: req.body.lastName,
-    email: req.body.email
+    email: req.body.email,
+    status: req.body.status,
+    access_level: req.body.access_level
   }).save()
     .then((saved) => {
       res.status(201).json({saved});
@@ -24,6 +26,7 @@ module.exports.addMember = (req, res) => {
       res.sendStatus(404);
     });
 };
+
 
 module.exports.getMember = (req, res) => {
   models.Member.where({ id: req.params.id }).fetch()
@@ -38,6 +41,7 @@ module.exports.getMember = (req, res) => {
     });
 };
 
+/***************************************** TO CHECK *************************************************/
 module.exports.updateMember = (req, res) => {
   models.Member.where({ id: req.params.id }).fetch()
     .then((member) => {
@@ -63,37 +67,29 @@ module.exports.deleteMember = (req, res) => {
       res.sendStatus(404);
     });
 };
+/***************************************** TO CHECK ends *************************************************/
 
-// TODO
 module.exports.checkRideCount = (req, res) => {
-  models.Member.where({ id: req.params.id }).fetch()
-    .then((member) => {
-      if (!member) {
-        throw member;
-      }
-      res.status(200).json({member});
+  models.Member.where({ id: req.params.id }).fetch({ columns: ['ride_count'] })
+    .then((memberRideCount) => {
+      res.status(200).json({memberRideCount});
     })
     .catch((err) => {
       res.sendStatus(404);
     });
 };
 
-
-// TODO
 module.exports.checkStatus = (req, res) => {
-  models.Member.where({ id: req.params.id }).fetch()
-    .then((member) => {
-      if (!member) {
-        throw member;
-      }
-      res.status(200).json({member});
+  models.Member.where({ id: req.params.id }).fetch({ columns: ['status'] })
+    .then((memberStatus) => {
+      res.status(200).json({memberStatus});
     })
     .catch((err) => {
       res.sendStatus(404);
     });
 };
 
-// TODO
+/***************************************** TODO *************************************************/
 module.exports.toggleAccessLevel = (req, res) => {
   models.Member.where({ id: req.params.id }).fetch()
     .then((member) => {

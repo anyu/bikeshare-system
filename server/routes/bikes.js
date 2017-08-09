@@ -33,7 +33,7 @@ router.route('/:id/availability')
 
 // Endpoint to check which station bike is docked at
 router.route('/:id/station')
-  .get(BikeController.checkDockingStation)
+  .get(BikeController.checkDockedStation)
 ;
 
 // Endpoint to check who last rider was
