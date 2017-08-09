@@ -63,3 +63,47 @@ module.exports.deleteMember = (req, res) => {
       res.sendStatus(404);
     });
 };
+
+// TODO
+module.exports.checkRideCount = (req, res) => {
+  models.Member.where({ id: req.params.id }).fetch()
+    .then((member) => {
+      if (!member) {
+        throw member;
+      }
+      res.status(200).json({member});
+    })
+    .catch((err) => {
+      res.sendStatus(404);
+    });
+};
+
+
+// TODO
+module.exports.checkStatus = (req, res) => {
+  models.Member.where({ id: req.params.id }).fetch()
+    .then((member) => {
+      if (!member) {
+        throw member;
+      }
+      res.status(200).json({member});
+    })
+    .catch((err) => {
+      res.sendStatus(404);
+    });
+};
+
+// TODO
+module.exports.toggleAccessLevel = (req, res) => {
+  models.Member.where({ id: req.params.id }).fetch()
+    .then((member) => {
+      if (!member) {
+        throw member;
+      }
+      res.status(200).json({member});
+    })
+    .catch((err) => {
+      res.sendStatus(404);
+    });
+};
+
