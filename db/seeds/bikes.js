@@ -1,7 +1,7 @@
-let generateBikes = (knex, index, is_available, docked_station_id, active_rider, last_rider) => {
+let generateBikes = (knex, index, is_available, docked_station_id, active_rider_id, last_rider_id) => {
   return knex('bikes').insert([
     {id: index, is_available: is_available, docked_station_id: docked_station_id, 
-    active_rider: active_rider, last_rider: last_rider}
+    active_rider_id: active_rider_id, last_rider_id: last_rider_id}
   ])
 };
 
@@ -19,7 +19,7 @@ exports.seed = function(knex, Promise) {
     let records = [];
     let availability = [true, false];
 
-    for (let i = 0; i < 200; i++) {
+    for (let i = 1; i <= 200; i++) {
       let randomAvailability = availability[getRandomInt(0, availability.length)];
       let randomDockedStation = getRandomInt(0, 10);
       let randomActiveRider = getRandomInt(0, 1000);

@@ -20,8 +20,8 @@ exports.up = function(knex, Promise) {
       table.increments('id').unsigned().primary();
       table.boolean('is_available');
       table.integer('docked_station_id').references('stations.id').onDelete('CASCADE');
-      table.integer('active_rider').references('members.id').onDelete('CASCADE');
-      table.integer('last_rider').references('members.id').onDelete('CASCADE');
+      table.integer('active_rider_id').references('members.id').onDelete('CASCADE');
+      table.integer('last_rider_id').references('members.id').onDelete('CASCADE');
     }),
     knex.schema.createTableIfNotExists('bikes_stations', (table) => {
       table.integer('bike_id').references('bikes.id').onDelete('CASCADE');

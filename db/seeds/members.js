@@ -35,7 +35,7 @@ exports.seed = function(knex, Promise) {
       let statusOptions = ['active', 'inactive'];
       let accessLevelOptions = ['full', 'none'];
 
-      for (let i = 0; i < 1000; i++) {
+      for (let i = 1; i <= 1000; i++) {
         let randomStatus = statusOptions[getRandomInt(0, statusOptions.length)];
         let randomAccessLevel = accessLevelOptions[getRandomInt(0, accessLevelOptions.length)];
         memberRecords.push(generateMembers(knex, i, randomStatus, randomAccessLevel));

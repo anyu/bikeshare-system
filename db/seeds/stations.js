@@ -13,7 +13,7 @@ exports.seed = function(knex, Promise) {
       let records = [];
       let maxCapacityOptions = [10, 20, 30, 40, 50];
 
-      for (let i = 0; i < 10; i++) {
+      for (let i = 1; i <= 10; i++) {
         let randomMaxCapacity = maxCapacityOptions[getRandomInt(0, maxCapacityOptions.length)];
         let randomBikeCount = getRandomInt(0, randomMaxCapacity);
         let percentFull = Math.floor((randomBikeCount/randomMaxCapacity)*100);
