@@ -16,6 +16,9 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.static(path.join(__dirname, '../public/')));   // Serve up static files 
 
 app.use('/api', routes.api);
+app.use('/api/members', routes.members);
+app.use('/api/bikes', routes.bikes);
+app.use('/api/stations', routes.stations);
 
 app.listen(PORT, () => {
   console.log(`Listening on port ${PORT}`);
