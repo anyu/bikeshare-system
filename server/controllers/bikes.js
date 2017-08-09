@@ -13,9 +13,10 @@ module.exports.getAllBikes = (req, res) => {
 
 module.exports.addBike = (req, res) => {
   models.Bike.forge({
-    firstName: req.body.firstName,
-    lastName: req.body.lastName,
-    email: req.body.email
+    is_available: req.body.is_available,
+    docked_station_id: req.body.docked_station_id,
+    active_rider: req.body.active_rider,
+    last_rider: req.body.last_rider
   }).save()
     .then((saved) => {
       res.status(201).json({saved});

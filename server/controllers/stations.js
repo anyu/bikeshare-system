@@ -13,9 +13,9 @@ module.exports.getAllStations = (req, res) => {
 
 module.exports.addStation = (req, res) => {
   models.Station.forge({
-    firstName: req.body.firstName,
-    lastName: req.body.lastName,
-    email: req.body.email
+    bike_count: req.body.bike_count,
+    max_capacity: req.body.max_capacity,
+    percent_full: req.body.percent_full
   }).save()
     .then((saved) => {
       res.status(201).json({saved});
