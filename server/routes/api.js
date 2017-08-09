@@ -1,7 +1,6 @@
 'use strict';
 const express = require('express');
 const router = express.Router();
-const dummy = require('../../db/seeds/dummyData');
 const MemberController = require('../controllers').Members;
 const StationController = require('../controllers').Stations;
 const BikeController = require('../controllers').Bikes;
