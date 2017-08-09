@@ -63,3 +63,45 @@ module.exports.deleteStation = (req, res) => {
       res.sendStatus(404);
     });
 };
+
+// TODO
+module.exports.checkBikeCount = (req, res) => {
+  models.Station.where({ id: req.params.id }).fetch()
+    .then(station => {
+      if (!station) {
+        throw station;
+      }
+      res.status(200).json({station});
+    })
+    .catch((err) => {
+      res.sendStatus(404);
+    });
+};
+
+// TODO
+module.exports.checkBikes = (req, res) => {
+  models.Station.where({ id: req.params.id }).fetch()
+    .then(station => {
+      if (!station) {
+        throw station;
+      }
+      res.status(200).json({station});
+    })
+    .catch((err) => {
+      res.sendStatus(404);
+    });
+};
+
+// TODO
+module.exports.checkVolume = (req, res) => {
+  models.Station.where({ id: req.params.id }).fetch()
+    .then(station => {
+      if (!station) {
+        throw station;
+      }
+      res.status(200).json({station});
+    })
+    .catch((err) => {
+      res.sendStatus(404);
+    });
+};
