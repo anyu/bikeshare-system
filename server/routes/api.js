@@ -27,6 +27,21 @@ router.route('/members/:id')
   .delete(MemberController.deleteMember)
 ;
 
+// Endpoint to check how many rides a member has taken
+router.route('/members/:id/ride_count')
+  .get(MemberController.checkRideCount)
+;
+
+// Endpoint to check whether or not currently riding a bike
+router.route('/members/:id/status')
+  .get(MemberController.checkStatus)
+;
+
+// Endpoint to enable/disable their ability to rent a bike
+router.route('/members/:id/toggle_access_level')
+  .get(MemberController.toggleAccessLevel)
+;
+
 
 // RESTful resources for Bikes
 router.route('/bikes')
@@ -40,6 +55,30 @@ router.route('/bikes/:id')
   .delete(BikeController.deleteBike)
 ;
 
+// Endpoint to rent bike – might add member id to route
+router.route('/bikes/:id/rent')
+  .get(BikeController.rentBike)
+;
+
+// Endpoint to return bike – might add member id to route
+router.route('/bikes/:id/return')
+  .get(BikeController.returnBike)
+;
+
+// Endpoint to check if bike is available
+router.route('/bikes/:id/availability')
+  .get(BikeController.checkAvailability)
+;
+
+// Endpoint to check which station bike is docked at
+router.route('/bikes/:id/station')
+  .get(BikeController.checkDockingStation)
+;
+
+// Endpoint to check who last rider was
+router.route('/bikes/:id/last_rider')
+  .get(BikeController.checkLastRider)
+;
 
 // RESTful resources for Stations
 router.route('/stations')
@@ -51,6 +90,21 @@ router.route('/stations/:id')
   .get(StationController.getStation)
   .put(StationController.updateStation)
   .delete(StationController.deleteStation)
+;
+
+// Endpoint to view number of bikes at station
+router.route('/stations/:id/bike_count')
+  .get(StationController.checkBikeCount)
+;
+
+// Endpoint to see which bikes are at station
+router.route('/stations/:id/bikes')
+  .get(StationController.checkBikes)
+;
+
+// Endpoint to check whether a station is empty
+router.route('/stations/:id/volume')
+  .get(StationController.checkVolume)
 ;
 
 module.exports = router;
