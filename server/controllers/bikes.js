@@ -64,3 +64,74 @@ module.exports.deleteBike = (req, res) => {
       res.sendStatus(404);
     });
 };
+
+
+// TODO
+module.exports.rentBike = (req, res) => {
+  models.Bike.where({ id: req.params.id }).fetch()
+    .then((bike) => {
+      if (!bike) {
+        throw bike;
+      }
+      res.status(200).json({bike});
+    })
+    .catch((err) => {
+      res.sendStatus(404);
+    });
+};
+
+// TODO
+module.exports.returnBike = (req, res) => {
+  models.Bike.where({ id: req.params.id }).fetch()
+    .then((bike) => {
+      if (!bike) {
+        throw bike;
+      }
+      res.status(200).json({bike});
+    })
+    .catch((err) => {
+      res.sendStatus(404);
+    });
+};
+
+// TODO
+module.exports.checkAvailability = (req, res) => {
+  models.Bike.where({ id: req.params.id }).fetch()
+    .then((bike) => {
+      if (!bike) {
+        throw bike;
+      }
+      res.status(200).json({bike});
+    })
+    .catch((err) => {
+      res.sendStatus(404);
+    });
+};
+
+// TODO
+module.exports.checkDockingStation = (req, res) => {
+  models.Bike.where({ id: req.params.id }).fetch()
+    .then((bike) => {
+      if (!bike) {
+        throw bike;
+      }
+      res.status(200).json({bike});
+    })
+    .catch((err) => {
+      res.sendStatus(404);
+    });
+};
+
+// TODO
+module.exports.checkLastRider = (req, res) => {
+  models.Bike.where({ id: req.params.id }).fetch()
+    .then((bike) => {
+      if (!bike) {
+        throw bike;
+      }
+      res.status(200).json({bike});
+    })
+    .catch((err) => {
+      res.sendStatus(404);
+    });
+};
