@@ -89,17 +89,23 @@ module.exports.checkStatus = (req, res) => {
     });
 };
 
-/***************************************** TODO *************************************************/
 module.exports.toggleAccessLevel = (req, res) => {
   models.Member.where({ id: req.params.id }).fetch()
     .then((member) => {
       if (!member) {
         throw member;
       }
-      res.status(200).json({member});
+      if (member.attributes.access_level === 'full') {
+        var params = {'access_level' : 'none'}
+      } else {
+        var params = {'access_level' : 'full'}
+      }
+      return member.save(params, {method: 'update',patch: true})
+      .then(() => {
+        res.status(200).json({member});
+      })
     })
     .catch((err) => {
       res.sendStatus(404);
     });
 };
-

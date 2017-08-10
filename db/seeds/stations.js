@@ -1,8 +1,8 @@
-let generateStations = (knex, index, bike_count, max_capacity, percent_full) => {
-  return knex('stations').insert([
-    {id: index, bike_count: bike_count, max_capacity: max_capacity, percent_full: percent_full}
-  ])
-};
+// let generateStations = (knex, index, bike_count, max_capacity, percent_full) => {
+//   return knex('stations').insert([
+//     {id: index, bike_count: bike_count, max_capacity: max_capacity, percent_full: percent_full}
+//   ])
+// };
 
 
 exports.seed = function(knex, Promise) {

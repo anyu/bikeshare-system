@@ -27,7 +27,7 @@ router.route('/:id/status')
 
 // Endpoint to enable/disable their ability to rent a bike
 router.route('/:id/toggle_access_level')
-  .get(MemberController.toggleAccessLevel)
+  .post(MemberController.toggleAccessLevel)
 ;
 
 module.exports = router;
