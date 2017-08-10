@@ -76,17 +76,15 @@ module.exports.checkBikeCount = (req, res) => {
     });
 };
 
-/***************************************** TODO *************************************************/
 module.exports.checkBikes = (req, res) => {
-  models.Station.where({ id: req.params.id }).fetch()
-    .then((station) => {
-      res.status(200).json({station});
+  models.Bike.where({ docked_station_id: req.params.id }).fetchAll({ columns: ['id'] }) 
+    .then((bikes) => {
+      res.status(200).json({bikes});
     })
     .catch((err) => {
       res.sendStatus(404);
     });
 };
-/***************************************** TODO ends *************************************************/
 
 module.exports.checkVolume = (req, res) => {
   models.Station.where({ id: req.params.id }).fetch({ columns: ['percent_full'] })
