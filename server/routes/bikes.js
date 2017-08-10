@@ -17,13 +17,13 @@ router.route('/:id')
 ;
 
 // Endpoint to rent bike – might add member id to route
-router.route('/:id/rent')
-  .get(BikeController.rentBike)
+router.route('/:id/members/:member_id/rent')
+  .post(BikeController.rentBike)
 ;
 
 // Endpoint to return bike – might add member id to route
-router.route('/:id/return')
-  .get(BikeController.returnBike)
+router.route('/:id/members/:member_id/return')
+  .post(BikeController.returnBike)
 ;
 
 // Endpoint to check if bike is available

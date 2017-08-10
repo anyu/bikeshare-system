@@ -27,7 +27,6 @@ module.exports.addMember = (req, res) => {
     });
 };
 
-
 module.exports.getMember = (req, res) => {
   models.Member.where({ id: req.params.id }).fetch()
     .then((member) => {
@@ -96,9 +95,9 @@ module.exports.toggleAccessLevel = (req, res) => {
         throw member;
       }
       if (member.attributes.access_level === 'full') {
-        var params = {'access_level' : 'none'}
+        var params = {'access_level': 'none'};
       } else {
-        var params = {'access_level' : 'full'}
+        var params = {'access_level': 'full'};
       }
       return member.save(params, {method: 'update',patch: true})
       .then(() => {
