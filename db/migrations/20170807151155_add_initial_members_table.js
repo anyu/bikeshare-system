@@ -22,11 +22,7 @@ exports.up = function(knex, Promise) {
       table.integer('docked_station_id').references('stations.id').onDelete('CASCADE');
       table.integer('active_rider_id').references('members.id').onDelete('CASCADE');
       table.integer('last_rider_id').references('members.id').onDelete('CASCADE');
-    }),
-    knex.schema.createTableIfNotExists('bikes_stations', (table) => {
-      table.integer('bike_id').references('bikes.id').onDelete('CASCADE');
-      table.integer('station_id').references('stations.id');
-    }),    
+    })  
   ]);
 };
 
