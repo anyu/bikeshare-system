@@ -78,14 +78,31 @@ module.exports.rentBike = (req, res) => {
         // Q: Should route be bikes/id/stations/station_id/rent instead?
         // Q: Should there be a check to see if this bike is at this station, or unnecessary. 
         //TODO: mark not at station instead of station 1
-        //TODO: update member status to active; decrement station's bike_count, recalculate percent full
         var params = {'docked_station_id': 1, 'active_rider_id': req.params.member_id, 'is_available': false};
         return bike.save(params, {method: 'update',patch: true})
         .then(() => {
-          res.status(200).json({bike});
-        })
-        .catch((err) => {
-          res.sendStatus(404);
+          models.Station.where({id: req.body.station_id}).fetch()
+          .tap((station) => {
+            var newPercentFull = Math.floor(((station.attributes.bike_count-1)/station.attributes.max_capacity)*100);
+            var params = {'bike_count': station.attributes.bike_count-1, 'percent_full': newPercentFull};
+            return station.save(params, {method: 'update',patch: true})
+            .then(() => {
+              models.Member.where({id: req.params.member_id}).fetch()
+              .then((member) => {
+                var params = {'status': 'active'};
+                return member.save(params, {method: 'update',patch: true})
+                .then(() => {
+                  res.status(200).json({bike, station, member});
+                })
+              })
+              .catch((err) => {
+                res.sendStatus(404);
+              });
+            });
+          })
+          .catch((err) => {
+            res.sendStatus(404);
+          });
         });
       } else {
         res.send("This bike isn't available for rent.");
@@ -135,10 +152,8 @@ module.exports.returnBike = (req, res) => {
       .catch((err) => {
         res.sendStatus(404);
       });        
-    })
-      //TODO: increment member's ride_count, update status to active; increment station's bike count
+    });
 };
-/***************************************** TODO ends *************************************************/
 
 module.exports.checkAvailability = (req, res) => {
   models.Bike.where({ id: req.params.id }).fetch({ columns: ['is_available'] })
