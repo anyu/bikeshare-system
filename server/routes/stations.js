@@ -30,4 +30,14 @@ router.route('/:id/volume')
   .get(StationController.checkVolume)
 ;
 
+// Endpoint to rent bike at a station
+router.route('/:id/rent')
+  .post(StationController.rentBike)
+;
+
+// Endpoint to return bike at a station
+router.route('/:id/return')
+  .post(StationController.returnBike)
+;
+
 module.exports = router;
