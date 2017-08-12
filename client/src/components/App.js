@@ -1,5 +1,7 @@
 import React from 'react';
-
+import Template from './Template';
+import Sidebar from './Sidebar';
+import Main from './Main';
 
 class App extends React.Component {
   constructor(props) {
@@ -8,8 +10,11 @@ class App extends React.Component {
 
   render() {
     return (
-      <div>
-        <h1>App is up!!</h1>
+      <div className="wrapper">
+        <Template>  
+          <Sidebar/>
+          <Main/>
+        </Template>  
       </div>
   )}
 }
