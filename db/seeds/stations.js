@@ -1,6 +1,6 @@
-// let generateStations = (knex, index, bike_count, max_capacity, percent_full) => {
+// let generateStations = (knex, index, bike_count, max_capacity, available_docks) => {
 //   return knex('stations').insert([
-//     {id: index, bike_count: bike_count, max_capacity: max_capacity, percent_full: percent_full}
+//     {id: index, bike_count: bike_count, max_capacity: max_capacity, available_docks: available_docks}
 //   ])
 // };
 

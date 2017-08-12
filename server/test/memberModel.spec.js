@@ -2,23 +2,24 @@ const expect = require('chai').expect;
 const Member = require('../../db/models/member.js');
 const dbUtils = require('../../db/lib/utils.js');
 
-describe('Member model tests', function () {
+describe('Member model tests', () => {
   // Deletes all tables, creates new tables, and seeds tables with test data
-  beforeEach(function (done) {
+  beforeEach((done) => {
     dbUtils.rollbackMigrate(done);
   });
 
   // Resets database back to original settings
-  afterEach(function (done) {
+  afterEach((done) => {
     dbUtils.rollback(done);
   });
 
-  it('should be able to retrieve test data', function (done) {
+  it('should be able to retrieve test data', (done) => {
     Member.forge().fetchAll()
-      .then(function (results) {
+      .then((results) => {
         done();
       })
-      .catch(function (err) {
+      .catch((err) => {
         done(err);
       });
   });
+});
