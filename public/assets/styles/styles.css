@@ -48,18 +48,17 @@ a:hover {
 }
 
 table {
-  width: 600px;
+  width: 760px;
   text-align: left;
   border-spacing:0; 
   border-collapse: collapse;
 }
 
 th {
-  font-weight: 300;
+  font-weight: 760;
   height: 50px;
   padding-left: 20px;
-  background-color: #4c555a;
-  color: white;
+  background-color: #fafafa;
 }
 
 tr {
@@ -81,7 +80,7 @@ td {
 }
 
 .main {
-  width: 600px;
+  width: 760px;
   display: inline-block;
   margin: 80px 60px;
 }
@@ -95,4 +94,14 @@ td {
   float: left;
   background-color: #4c555a;
   padding: 30px 40px;
+}
+
+.code {
+  background-color: #4c555a;
+  color: #ffffff;
+  height: auto;
+}
+
+pre {
+  padding: 30px;
 }

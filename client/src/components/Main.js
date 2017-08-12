@@ -1,4 +1,5 @@
 import React from 'react';
+import contentData from '../contentData';
 
 class Main extends React.Component {
   constructor(props) {
@@ -6,6 +7,7 @@ class Main extends React.Component {
   }
 
   render () {
+    var test = `{ message: 'test'}`;
     return (
         <div className="main">
           <h1 className="page_title">GET /members</h1>
@@ -13,7 +15,7 @@ class Main extends React.Component {
             magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.
           </p>
           <h2>Resource URL</h2>
-          <p>http://localhost:3000/api/members/</p>
+          <p>{ contentData.members[0].resource_url }</p>
           <h2>Parameters</h2>
           <table>
             <tbody>
@@ -37,6 +39,10 @@ class Main extends React.Component {
             </tr>
             </tbody>
           </table>
+          <h2>Example Response</h2>
+          <div className="code">
+            <pre> { test } </pre>
+          </div>
         </div>
     );
   }
