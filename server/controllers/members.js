@@ -4,7 +4,7 @@ const knex = require('../../db/config').knex;
 module.exports.getAllMembers = (req, res) => {
   models.Member.fetchAll()
     .then((members) => {
-      res.status(200).json({members});
+      res.status(200).json(members);
     })
     .catch((err) => {
       res.sendStatus(404);
@@ -19,8 +19,8 @@ module.exports.addMember = (req, res) => {
     status: req.body.status,
     access_level: req.body.access_level
   }).save()
-    .then((saved) => {
-      res.status(201).json({saved});
+    .then((member) => {
+      res.status(201).json(member);
     })
     .catch((err) => {
       res.sendStatus(404);
@@ -33,14 +33,13 @@ module.exports.getMember = (req, res) => {
       if (!member) {
         throw member;
       }
-      res.status(200).json({member});
+      res.status(200).json(member);
     })
     .catch((err) => {
       res.sendStatus(404);
     });
 };
 
-/***************************************** TO CHECK *************************************************/
 module.exports.updateMember = (req, res) => {
   models.Member.where({ id: req.params.id }).fetch()
     .then((member) => {
@@ -66,12 +65,11 @@ module.exports.deleteMember = (req, res) => {
       res.sendStatus(404);
     });
 };
-/***************************************** TO CHECK ends *************************************************/
 
 module.exports.checkRideCount = (req, res) => {
   models.Member.where({ id: req.params.id }).fetch({ columns: ['ride_count'] })
     .then((memberRideCount) => {
-      res.status(200).json({memberRideCount});
+      res.status(200).json(memberRideCount);
     })
     .catch((err) => {
       res.sendStatus(404);
@@ -81,7 +79,7 @@ module.exports.checkRideCount = (req, res) => {
 module.exports.checkStatus = (req, res) => {
   models.Member.where({ id: req.params.id }).fetch({ columns: ['status'] })
     .then((memberStatus) => {
-      res.status(200).json({memberStatus});
+      res.status(200).json(memberStatus);
     })
     .catch((err) => {
       res.sendStatus(404);
@@ -101,7 +99,7 @@ module.exports.toggleAccessLevel = (req, res) => {
       }
       return member.save(params, {method: 'update',patch: true})
       .then(() => {
-        res.status(200).json({member});
+        res.status(200).json(member);
       })
     })
     .catch((err) => {

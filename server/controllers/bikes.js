@@ -4,7 +4,7 @@ const knex = require('../../db/config').knex;
 module.exports.getAllBikes = (req, res) => {
   models.Bike.fetchAll()
     .then((bikes) => {
-      res.status(200).json({bikes});
+      res.status(200).json(bikes);
     })
     .catch((err) => {
       res.sendStatus(404);
@@ -18,8 +18,8 @@ module.exports.addBike = (req, res) => {
     active_rider_id: req.body.active_rider_id,
     last_rider_id: req.body.last_rider_id
   }).save()
-    .then((saved) => {
-      res.status(201).json({saved});
+    .then((bike) => {
+      res.status(201).json(bike);
     })
     .catch((err) => {
       res.sendStatus(404);
@@ -32,14 +32,12 @@ module.exports.getBike = (req, res) => {
       if (!bike) {
         throw bike;
       }
-      res.status(200).json({bike});
+      res.status(200).json(bike);
     })
     .catch((err) => {
       res.sendStatus(404);
     });
 };
-
-/***************************************** TO CHECK *********************************************/
 
 module.exports.updateBike = (req, res) => {
   models.Bike.where({ id: req.params.id }).fetch()
@@ -66,12 +64,11 @@ module.exports.deleteBike = (req, res) => {
       res.sendStatus(404);
     });
 };
-/***************************************** TO CHECK ends *****************************************/
 
 module.exports.checkAvailability = (req, res) => {
   models.Bike.where({ id: req.params.id }).fetch({ columns: ['is_available'] })
     .then((bikeAvailability) => {
-      res.status(200).json({bikeAvailability});
+      res.status(200).json(bikeAvailability);
     })
     .catch((err) => {
       res.sendStatus(404);
@@ -81,7 +78,7 @@ module.exports.checkAvailability = (req, res) => {
 module.exports.checkDockedStation = (req, res) => {
   models.Bike.where({ id: req.params.id }).fetch({ columns: ['docked_station_id'] })
     .then((bikeDockedStation) => {
-      res.status(200).json({bikeDockedStation});
+      res.status(200).json(bikeDockedStation);
     })
     .catch((err) => {
       res.sendStatus(404);
@@ -89,9 +86,10 @@ module.exports.checkDockedStation = (req, res) => {
 };
 
 module.exports.checkLastRider = (req, res) => {
-  models.Bike.where({ id: req.params.id }).fetch({ columns: ['last_rider'] })
+  console.log('req.params.id',req.params.id)
+  models.Bike.where({ id: req.params.id }).fetch({ columns: ['last_rider_id'] })
     .then((bikeLastRider) => {
-      res.status(200).json({bikeLastRider});
+      res.status(200).json(bikeLastRider);
     })
     .catch((err) => {
       res.sendStatus(404);

@@ -3,8 +3,8 @@ const knex = require('../../db/config').knex;
 
 module.exports.getAllStations = (req, res) => {
   models.Station.fetchAll()
-    .then(stations => {
-      res.status(200).json({stations});
+    .then((stations) => {
+      res.status(200).json(stations);
     })
     .catch((err) => {
       res.sendStatus(404);
@@ -17,8 +17,8 @@ module.exports.addStation = (req, res) => {
     max_capacity: req.body.max_capacity,
     available_docks: req.body.available_docks
   }).save()
-    .then((saved) => {
-      res.status(201).json({saved});
+    .then((station) => {
+      res.status(201).json(station);
     })
     .catch((err) => {
       res.sendStatus(404);
@@ -27,28 +27,27 @@ module.exports.addStation = (req, res) => {
 
 module.exports.getStation = (req, res) => {
   models.Station.where({ id: req.params.id }).fetch()
-    .then(station => {
+    .then((station) => {
       if (!station) {
         throw station;
       }
-      res.status(200).json({station});
+      res.status(200).json(station);
     })
     .catch((err) => {
       res.sendStatus(404);
     });
 };
 
-/***************************************** TO CHECK *************************************************/
 module.exports.updateStation = (req, res) => {
   models.Station.where({ id: req.params.id }).fetch()
-    .then(station => {
+    .then((station) => {
       if (!station) {
         throw station;
       }
       return station.save(req.body, { method: 'update' });
     })
-    .then(() => {
-      res.sendStatus(201);
+    .then((station) => {
+      res.status(201).json(station);
     })
     .catch((err) => {
       res.sendStatus(404);
@@ -64,12 +63,11 @@ module.exports.deleteStation = (req, res) => {
       res.sendStatus(404);
     });
 };
-/***************************************** TO CHECK ends *************************************************/
 
 module.exports.checkBikeCount = (req, res) => {
   models.Station.where({ id: req.params.id }).fetch({ columns: ['bike_count'] })
     .then((stationBikeCount) => {
-      res.status(200).json({stationBikeCount});
+      res.status(200).json(stationBikeCount);
     })
     .catch((err) => {
       res.sendStatus(404);
@@ -79,7 +77,11 @@ module.exports.checkBikeCount = (req, res) => {
 module.exports.checkBikes = (req, res) => {
   models.Bike.where({ docked_station_id: req.params.id }).fetchAll({ columns: ['id'] }) 
     .then((bikes) => {
-      res.status(200).json({bikes});
+      var bikeIDs = [];
+      bikes.forEach(function (bike) {
+        bikeIDs.push(bike.attributes.id);
+      })   
+      res.status(200).json({bikeIDs});
     })
     .catch((err) => {
       res.sendStatus(404);
@@ -90,9 +92,9 @@ module.exports.checkVolume = (req, res) => {
   models.Station.where({ id: req.params.id }).fetch({ columns: ['bike_count'] })
     .then(station => {
       if (station.attributes.bike_count === 0) {
-        res.status(200).json("Station is empty.");
+        res.status(200).json({message: "Station is empty."});
       } else {
-        res.status(200).json({station});
+        res.status(200).json(station);
       }
     })
     .catch((err) => {
