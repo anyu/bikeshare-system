@@ -39,11 +39,13 @@ li {
   padding: 5px 0 ;
 }
 
-a {
+a, .sidebarLink {
   color: #ffffff;
   text-decoration: none;
+  cursor: pointer;
 }
-a:hover {
+
+a:hover, .sidebarLink:hover {
   text-decoration: underline;
 }
 

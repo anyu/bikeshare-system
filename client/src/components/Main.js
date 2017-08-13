@@ -1,5 +1,6 @@
 import React from 'react';
 import contentData from '../contentData';
+// import test from '../test';
 
 class Main extends React.Component {
   constructor(props) {
@@ -7,43 +8,49 @@ class Main extends React.Component {
   }
 
   render () {
-    var test = `{ message: 'test'}`;
     return (
-        <div className="main">
-          <h1 className="page_title">GET /members</h1>
-          <p>Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. 
-            magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.
-          </p>
-          <h2>Resource URL</h2>
-          <p>{ contentData.members[0].resource_url }</p>
-          <h2>Parameters</h2>
-          <table>
-            <tbody>
-            <tr>
-              <th>Name</th>
-              <th>Required</th> 
-              <th>Description</th>
-              <th>Example</th>
-            </tr>
-            <tr>
-              <td>member_id</td>
-              <td>required</td> 
-              <td>...</td> 
-              <td>12</td>
-            </tr>
-            <tr>
-              <td>station_id</td>
-              <td>required</td> 
-              <td>...</td> 
-              <td>8</td>
-            </tr>
-            </tbody>
-          </table>
-          <h2>Example Response</h2>
-          <div className="code">
-            <pre> { test } </pre>
-          </div>
-        </div>
+      <div className="main">
+        <h1 className="page_title">{ this.props.currentPage }</h1>
+        <p>{ contentData.text[this.props.currentPage].summary }
+        </p>
+        { contentData.text[this.props.currentPage].resource_url ? 
+          <div>
+            <h2>Resource URL</h2>
+            <p>{ contentData.text[this.props.currentPage].resource_url }</p> 
+          </div>: null 
+        }
+        { contentData.text[this.props.currentPage].params ? 
+          <div className="params">
+            <h2>Parameters</h2>
+            <table>
+              <tbody>
+              <tr>
+                <th>Name</th>
+                <th>Required</th> 
+                <th>Description</th>
+                <th>Example</th>
+              </tr>
+                { contentData.text[this.props.currentPage].params.map((param, i) => 
+                  <tr key={i}>
+                    <td>{ param.name }</td>
+                    <td>{ param.required }</td> 
+                    <td>{ param.description }</td> 
+                    <td>{ param.example }</td>
+                  </tr> 
+              )}
+              </tbody>
+            </table>
+          </div> : null 
+        }
+        { contentData.text[this.props.currentPage].response ?   
+          <div className="exampleResponse">
+            <h2>Example Response</h2>
+            <div className="code">
+              <pre> { contentData.text[this.props.currentPage].response } </pre>
+            </div>
+          </div> : null 
+        }
+      </div>
     );
   }
 }
