@@ -6,17 +6,16 @@ class Sidebar extends React.Component {
   }
 
   render () {
-    const memberEndpoints = ['GET /members', 'POST /members', 'GET /members/:id', 'POST /members/:id', 'DELETE /members/:id', 'GET /members/:id/ride_count',
-                             'GET /members/:id/status', 'GET /members/:id/toggle_access_level'];
-    const stationEndpoints = ['GET /stations', 'POST /stations', 'GET /stations/:id', 'PUT /stations/:id', 'DELETE /stations/:id', 'GET /stations/:id/bike_count', 
-                              'GET /stations/:id/bikes', 'GET /stations/:id/volume', 'POST /stations/:id/rent', 'POST /stations/:id/return'];
-    const bikeEndpoints = ['GET /bikes', 'POST /bikes', 'GET /bikes/:id', 'POST /bikes/:id', 'DELETE /bikes/:id', 'GET /bikes/:id/availability', 
-                           'GET /bikes/:id/station', 'GET /bikes/:id/last_rider'];
+    const memberEndpoints = ['Retrieve all members', 'Add a member', 'Retrieve a member', 'Update a member', 'Delete a member', 'Retrieve ride count',
+                             'Retrieve status', 'Retrieve access level'];
+    const stationEndpoints = ['Retrieve all stations', 'Add a station', 'Retrieve a station', 'Update a station', 'Delete a station', 'Retrieve bike count', 
+                              'Retrieve list of bikes', 'Retrieve volume', 'Rent a bike', 'Return a bike'];
+    const bikeEndpoints = ['Retrieve all bikes', 'Add a bike', 'Retrieve a bike', 'Update a bike', 'Delete a bike', 'Retrieve availability', 
+                           'Retrieve docked station', 'Retrieve last rider'];
 
     return (
         <div className="sidebar">
-          <h4>Overview</h4>
-
+          <h4 className="sidebarLink" onClick ={ (e) => this.props.togglePage(e, "Overview") }>Overview</h4>
           <h3>Members</h3>
             {memberEndpoints.map((item, i) => 
               <li key={i} className="sidebarLink" onClick ={ (e) => this.props.togglePage(e, item) } >{item}</li>

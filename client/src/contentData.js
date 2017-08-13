@@ -3,9 +3,9 @@ require('dotenv').config();
 module.exports = {
   text: {
     'Overview' : {
-      summary: 'This is the documentation for... sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. magna aliquyam'
+      summary: 'The CityBike REST API allows you to query information about the members, stations, and bikes in the system. You can also perform operations such as renting and returning bikes.'
     },    
-    'GET /members':
+    'Retrieve all members':
       {
         summary: 'Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. magna aliquyam',
         resource_url: process.env.ROOT_URL + '/api/members',
@@ -23,7 +23,7 @@ module.exports = {
         }],
         response: `{ message: 'poster'}`
       },
-      'POST /members':
+      'Add a member':
       {
         summary: 'Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. magna aliquyam',
         resource_url: process.env.ROOT_URL + '/api/members',
@@ -40,7 +40,7 @@ module.exports = {
           example: 'example'
         }]
       },
-      'GET /members/:id':
+      'Retrieve a member':
       {
         summary: 'Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. magna aliquyam',
         resource_url: process.env.ROOT_URL + '/api/members/:id',
@@ -57,7 +57,7 @@ module.exports = {
         example: 'example'
       }]
     },  
-    'POST /members/:id':
+    'Update a member':
     {
       summary: 'Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. magna aliquyam',
       resource_url: process.env.ROOT_URL + '/api/members/:id',
@@ -74,7 +74,7 @@ module.exports = {
         example: 'example'
       }]
     },
-    'DELETE /members/:id':
+    'Delete a member':
     {
       summary: 'Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. magna aliquyam',
       resource_url: process.env.ROOT_URL + '/api/members/:id',
@@ -91,7 +91,7 @@ module.exports = {
         example: 'example'
       }]
     },
-    'GET /members/:id/ride_count':
+    "Retrieve ride count":
     {
       summary: 'Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. magna aliquyam',
       resource_url: process.env.ROOT_URL + '/api/members/:id/ride_count',
@@ -108,7 +108,7 @@ module.exports = {
         example: 'example'
       }]
     },
-    'GET /members/:id/status':
+    'Retrieve status':
     {
       summary: 'Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. magna aliquyam',
       resource_url: process.env.ROOT_URL + '/api/members/:id/status',
@@ -125,7 +125,7 @@ module.exports = {
         example: 'example'
       }]
     },
-    'GET /members/:id/toggle_access_level':
+    'Retrieve access level':
     {
       summary: 'Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. magna aliquyam',
       resource_url: process.env.ROOT_URL + '/api/members/:id/toggle_access_level',
@@ -142,7 +142,7 @@ module.exports = {
         example: 'example'
       }]
     },
-    'GET /stations':
+    'Retrieve all stations':
     {
       summary: 'Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. magna aliquyam',
       resource_url: process.env.ROOT_URL + '/api/stations',
@@ -159,7 +159,7 @@ module.exports = {
         example: 'example'
       }]
     },   
-    'POST /stations':
+    'Add a station':
     {
       summary: 'Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. magna aliquyam',
       resource_url: process.env.ROOT_URL + '/api/stations',
@@ -176,7 +176,7 @@ module.exports = {
         example: 'example'
       }]
     },     
-    'GET /stations/:id':
+    'Retrieve a station':
     {
       summary: 'Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. magna aliquyam',
       resource_url: process.env.ROOT_URL + '/api/stations/:id',
@@ -193,7 +193,7 @@ module.exports = {
         example: 'example'
       }]
     }, 
-    'PUT /stations/:id':
+    'Update a station':
     {
       summary: 'Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. magna aliquyam',
       resource_url: process.env.ROOT_URL + '/api/stations/:id',
@@ -210,7 +210,7 @@ module.exports = {
         example: 'example'
       }]
     }, 
-    'DELETE /stations/:id':
+    'Delete a station':
     {
       summary: 'Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. magna aliquyam',
       resource_url: process.env.ROOT_URL + '/api/stations/:id',
@@ -227,7 +227,7 @@ module.exports = {
         example: 'example'
       }]
     }, 
-    'GET /stations/:id/bike_count':
+    'Retrieve bike count':
     {
       summary: 'Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. magna aliquyam',
       resource_url: process.env.ROOT_URL + '/api/stations/:id/bike_count',
@@ -244,7 +244,7 @@ module.exports = {
         example: 'example'
       }]
     }, 
-    'GET /stations/:id/bikes':
+    'Retrieve list of bikes':
     {
       summary: 'Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. magna aliquyam',
       resource_url: process.env.ROOT_URL + '/api/stations/:id/bikes',
@@ -261,7 +261,7 @@ module.exports = {
         example: 'example'
       }]
     }, 
-    'GET /stations/:id/volume':
+    'Retrieve volume':
     {
       summary: 'Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. magna aliquyam',
       resource_url: process.env.ROOT_URL + '/api/stations/:id/volume',
@@ -278,7 +278,7 @@ module.exports = {
         example: 'example'
       }]
     }, 
-    'POST /stations/:id/rent':
+    'Rent a bike':
     {
       summary: 'Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. magna aliquyam',
       resource_url: process.env.ROOT_URL + '/api/stations/:id/rent',
@@ -295,7 +295,7 @@ module.exports = {
         example: 'example'
       }]
     }, 
-    'POST /stations/:id/return':
+    'Return a bike':
     {
       summary: 'Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. magna aliquyam',
       resource_url: process.env.ROOT_URL + '/api/stations/:id/return',
@@ -312,7 +312,7 @@ module.exports = {
         example: 'example'
       }]
     },   
-    'GET /bikes':
+    'Retrieve all bikes':
     {
       summary: 'Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. magna aliquyam',
       resource_url: process.env.ROOT_URL + '/api/bikes',
@@ -329,7 +329,7 @@ module.exports = {
         example: 'example'
       }]
     },   
-    'POST /bikes':
+    'Add a bike':
     {
       summary: 'Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. magna aliquyam',
       resource_url: process.env.ROOT_URL + '/api/bikes',
@@ -346,7 +346,7 @@ module.exports = {
         example: 'example'
       }]
     }, 
-    'GET /bikes/:id':
+    'Retrieve a bike':
     {
       summary: 'Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. magna aliquyam',
       resource_url: process.env.ROOT_URL + '/api/bikes/:id',
@@ -363,7 +363,7 @@ module.exports = {
         example: 'example'
       }]
     }, 
-    'POST /bikes/:id':
+    'Update a bike':
     {
       summary: 'Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. magna aliquyam',
       resource_url: process.env.ROOT_URL + '/api/bikes/:id',
@@ -380,7 +380,7 @@ module.exports = {
         example: 'example'
       }]
     }, 
-    'DELETE /bikes/:id':
+    'Delete a bike':
     {
       summary: 'Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. magna aliquyam',
       resource_url: process.env.ROOT_URL + '/api/bikes/:id',
@@ -397,7 +397,7 @@ module.exports = {
         example: 'example'
       }]
     },     
-    'GET /bikes/:id/availability':
+    'Retrieve availability':
     {
       summary: 'Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. magna aliquyam',
       resource_url: process.env.ROOT_URL + '/api/bikes/:id/availability',
@@ -414,7 +414,7 @@ module.exports = {
         example: 'example'
       }]
     }, 
-    'GET /bikes/:id/station':
+    'Retrieve docked station':
     {
       summary: 'Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. magna aliquyam',
       resource_url: process.env.ROOT_URL + '/api/bikes/:id/station',
@@ -431,7 +431,7 @@ module.exports = {
         example: 'example'
       }]
     }, 
-    'GET /bikes/:id/last_rider':
+    'Retrieve last rider':
     {
       summary: 'Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. magna aliquyam',
       resource_url: process.env.ROOT_URL + '/api/bikes/:id/last_rider',
