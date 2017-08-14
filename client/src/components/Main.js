@@ -13,6 +13,12 @@ class Main extends React.Component {
         <h1 className="page_title">{ this.props.currentPage }</h1>
         <p>{ contentData.text[this.props.currentPage].summary }
         </p>
+        { contentData.text[this.props.currentPage].method ? 
+          <div>
+            <h2>Method</h2>
+            <p>{ contentData.text[this.props.currentPage].method }</p> 
+          </div>: null 
+        }        
         { contentData.text[this.props.currentPage].resource_url ? 
           <div>
             <h2>Resource URL</h2>
@@ -26,6 +32,7 @@ class Main extends React.Component {
               <tbody>
               <tr>
                 <th>Name</th>
+                <th>Type</th>
                 <th>Required</th> 
                 <th>Description</th>
                 <th>Example</th>
@@ -33,6 +40,7 @@ class Main extends React.Component {
                 { contentData.text[this.props.currentPage].params.map((param, i) => 
                   <tr key={i}>
                     <td>{ param.name }</td>
+                    <td>{ param.type }</td> 
                     <td>{ param.required }</td> 
                     <td>{ param.description }</td> 
                     <td>{ param.example }</td>

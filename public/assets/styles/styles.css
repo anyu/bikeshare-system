@@ -11,6 +11,10 @@ p {
   line-height: 22px;
 }
 
+.main p {
+  margin-top: 0px;
+}
+
 h1 {
   font-size: 30px;
   font-weight: 600;
@@ -19,7 +23,7 @@ h1 {
 }
 
 h2 {
-  margin-top: 50px;
+  margin-top: 30px;
   margin-bottom: 5px;
 }
 h4 {
@@ -78,7 +82,7 @@ tr:nth-child(odd) {
 
 td {
   border: 1px solid #f1f1f1;
-  padding-left: 20px;
+  padding: 0 20px;
 }
 
 .container {
@@ -111,4 +115,5 @@ td {
 
 pre {
   padding: 30px;
+  overflow-x: auto;
 }

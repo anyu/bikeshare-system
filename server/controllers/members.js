@@ -11,20 +11,22 @@ module.exports.getAllMembers = (req, res) => {
     });
 };
 
+
 module.exports.addMember = (req, res) => {
   models.Member.forge({
-    firstName: req.body.firstName,
-    lastName: req.body.lastName,
+    first_name: req.body.first_name,
+    last_name: req.body.last_name,
     email: req.body.email,
-    status: req.body.status,
-    access_level: req.body.access_level
+    status: req.body.status || 'inactive',
+    access_level: req.body.access_level || 'full',
+    ride_count: req.body.ride_count || 0
   }).save()
-    .then((member) => {
-      res.status(201).json(member);
-    })
-    .catch((err) => {
-      res.sendStatus(404);
-    });
+  .then((member) => {
+    res.status(201).json(member);
+  })
+  .catch((err) => {
+    res.sendStatus(404);
+  });
 };
 
 module.exports.getMember = (req, res) => {
@@ -59,7 +61,7 @@ module.exports.updateMember = (req, res) => {
 module.exports.deleteMember = (req, res) => {
   models.Member.where({ id: req.params.id }).destroy()
     .then(() => {
-      res.sendStatus(200);
+      res.status(200).json('Member deleted');
     })
     .catch((err) => {
       res.sendStatus(404);

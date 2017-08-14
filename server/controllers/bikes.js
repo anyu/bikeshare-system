@@ -47,8 +47,8 @@ module.exports.updateBike = (req, res) => {
       }
       return bike.save(req.body, { method: 'update' });
     })
-    .then(() => {
-      res.sendStatus(201);
+    .then((bike) => {
+      res.status(201).json(bike);
     })
     .catch((err) => {
       res.sendStatus(404);
@@ -58,7 +58,7 @@ module.exports.updateBike = (req, res) => {
 module.exports.deleteBike = (req, res) => {
   models.Bike.where({ id: req.params.id }).destroy()
     .then(() => {
-      res.sendStatus(200);
+      res.status(200).json('Bike deleted');
     })
     .catch((err) => {
       res.sendStatus(404);

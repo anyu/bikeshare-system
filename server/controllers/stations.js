@@ -14,8 +14,8 @@ module.exports.getAllStations = (req, res) => {
 module.exports.addStation = (req, res) => {
   models.Station.forge({
     bike_count: req.body.bike_count,
-    max_capacity: req.body.max_capacity,
-    available_docks: req.body.available_docks
+    available_docks: req.body.available_docks,    
+    max_capacity: req.body.max_capacity
   }).save()
     .then((station) => {
       res.status(201).json(station);
@@ -57,7 +57,7 @@ module.exports.updateStation = (req, res) => {
 module.exports.deleteStation = (req, res) => {
   models.Station.where({ id: req.params.id }).destroy()
     .then(() => {
-      res.sendStatus(200);
+      res.sendStatus('Station deleted');
     })
     .catch((err) => {
       res.sendStatus(404);
