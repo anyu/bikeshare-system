@@ -56,13 +56,28 @@ module.exports.updateBike = (req, res) => {
 };
 
 module.exports.deleteBike = (req, res) => {
-  models.Bike.where({ id: req.params.id }).destroy()
-    .then(() => {
-      res.status(200).json('Bike deleted');
+  models.Bike.where({ id: req.params.id }).fetch({ columns: ['docked_station_id'] })
+    .tap((bike) => {
+      models.Station.where({ id: bike.attributes.docked_station_id }).fetch()
+      .then((station) => {
+        return station.save({'bike_count': station.attributes.bike_count-1, "available_docks": station.attributes.available_docks+1}, {method: 'update',patch: true});
+      })
+      .then(() => {
+        models.Bike.where({ id: req.params.id }).fetch()
+        .tap((bike) => {
+          return bike.destroy()     
+        })     
+        .then(() => {
+          res.status(200).json('Bike deleted');
+        })
+      })
     })
     .catch((err) => {
       res.sendStatus(404);
-    });
+    })
+  .catch((err) => {
+    res.sendStatus(404);
+  });
 };
 
 module.exports.checkAvailability = (req, res) => {

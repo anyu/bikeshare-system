@@ -55,13 +55,30 @@ module.exports.updateStation = (req, res) => {
 };
 
 module.exports.deleteStation = (req, res) => {
-  models.Station.where({ id: req.params.id }).destroy()
-    .then(() => {
-      res.sendStatus('Station deleted');
+  models.Bike.where({docked_station_id: req.params.id}).fetchAll()
+    .then((bikes) => {
+      bikes.forEach(function (bike) {
+        return bike.save({'docked_station_id': null}, {method: 'update',patch: true});
+      })
+    }) 
+    .then(() => {       
+      models.Station.where({ id: req.params.id }).fetch()
+      .then((station) => { 
+        if (!station) {
+          throw station;
+        }   
+        return station.destroy()
+        .then(() => {
+          res.status(200).json('Station deleted');
+        })
+      })
+      .catch((err) => {
+        res.sendStatus(404);
+      })
     })
-    .catch((err) => {
-      res.sendStatus(404);
-    });
+  .catch((err) => {
+    res.sendStatus(404);
+  });
 };
 
 module.exports.checkBikeCount = (req, res) => {
@@ -128,7 +145,7 @@ module.exports.rentBike = (req, res) => {
                 var stationParams = {'bike_count': station.attributes.bike_count-1, 'available_docks': availableDocks};
                 station.save(stationParams, {method: 'update',patch: true});
             }).tap((bike) => {
-                var bikeParams = {'docked_station_id': 1, 'active_rider_id': parseInt(req.body.member_id), 'is_available': false};
+                var bikeParams = {'docked_station_id': null, 'active_rider_id': parseInt(req.body.member_id), 'is_available': false};
                 return bike.save(bikeParams, {method: 'update',patch: true})
                 .then(() => {                                
                   res.status(200).json({bike, station, member});
@@ -172,7 +189,7 @@ module.exports.returnBike = (req, res) => {
                 var stationParams = {'bike_count': station.attributes.bike_count+1, 'available_docks': availableDocks};
                 station.save(stationParams, {method: 'update',patch: true});
             }).tap((bike) => {
-                var bikeParams = {'docked_station_id': station.attributes.id, 'active_rider_id': 1, 'last_rider_id': parseInt(req.body.member_id), 'is_available': true};
+                var bikeParams = {'docked_station_id': station.attributes.id, 'active_rider_id': null, 'last_rider_id': parseInt(req.body.member_id), 'is_available': true};
                 return bike.save(bikeParams, {method: 'update',patch: true})
                 .then(() => {                                
                   res.status(200).json({bike, station, member});
