@@ -14,7 +14,6 @@ module.exports.getAllStations = (req, res) => {
 module.exports.addStation = (req, res) => {
   models.Station.forge({
     bike_count: req.body.bike_count,
-    available_docks: req.body.available_docks,    
     max_capacity: req.body.max_capacity
   }).save()
     .then((station) => {
@@ -141,8 +140,7 @@ module.exports.rentBike = (req, res) => {
                 res.send("This bike is unavailable for rent.");
               }
             }).tap(() => {
-                var availableDocks = station.attributes.max_capacity - (station.attributes.bike_count-1);
-                var stationParams = {'bike_count': station.attributes.bike_count-1, 'available_docks': availableDocks};
+                var stationParams = {'bike_count': station.attributes.bike_count-1};
                 station.save(stationParams, {method: 'update',patch: true});
             }).tap((bike) => {
                 var bikeParams = {'docked_station_id': null, 'active_rider_id': parseInt(req.body.member_id), 'is_available': false};
@@ -177,7 +175,7 @@ module.exports.returnBike = (req, res) => {
         throw station;
       }
       // if station has available docks
-      if (station.attributes.available_docks > 0) {
+      if (station.attributes.bike_count < station.attributes.max_capacity) {
         models.Member.where({id: req.body.member_id}).fetch()
         .tap((member) => {
             models.Bike.where({id: req.body.bike_id}).fetch()
@@ -185,8 +183,7 @@ module.exports.returnBike = (req, res) => {
                 var memberParams = {'ride_count': member.attributes.ride_count+1, 'status': 'inactive'};
                 member.save(memberParams, {method: 'update',patch: true});
             }).tap(() => {
-                var availableDocks = station.attributes.max_capacity - (station.attributes.bike_count+1);
-                var stationParams = {'bike_count': station.attributes.bike_count+1, 'available_docks': availableDocks};
+                var stationParams = {'bike_count': station.attributes.bike_count+1};
                 station.save(stationParams, {method: 'update',patch: true});
             }).tap((bike) => {
                 var bikeParams = {'docked_station_id': station.attributes.id, 'active_rider_id': null, 'last_rider_id': parseInt(req.body.member_id), 'is_available': true};

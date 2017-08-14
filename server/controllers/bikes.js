@@ -60,7 +60,7 @@ module.exports.deleteBike = (req, res) => {
     .tap((bike) => {
       models.Station.where({ id: bike.attributes.docked_station_id }).fetch()
       .then((station) => {
-        return station.save({'bike_count': station.attributes.bike_count-1, "available_docks": station.attributes.available_docks+1}, {method: 'update',patch: true});
+        return station.save({'bike_count': station.attributes.bike_count-1}, {method: 'update',patch: true});
       })
       .then(() => {
         models.Bike.where({ id: req.params.id }).fetch()

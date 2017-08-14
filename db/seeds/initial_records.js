@@ -7,9 +7,9 @@ let generateMembers = (knex, index, status, access_level) => {
   ])
 };
 
-let generateStations = (knex, index, bike_count, max_capacity, available_docks) => {
+let generateStations = (knex, index, bike_count, max_capacity) => {
   return knex('stations').insert([
-    {id: index, bike_count: bike_count, max_capacity: max_capacity, available_docks: available_docks}
+    {id: index, bike_count: bike_count, max_capacity: max_capacity}
   ])
 };
 
@@ -55,8 +55,7 @@ exports.seed = function(knex, Promise) {
         for (let i = 1; i <= 10; i++) {
           let randomMaxCapacity = maxCapacityOptions[getRandomInt(0, maxCapacityOptions.length)];
           let randomBikeCount = getRandomInt(0, randomMaxCapacity);
-          let available_docks = randomMaxCapacity - randomBikeCount;
-          stationRecords.push(generateStations(knex, i, randomBikeCount, randomMaxCapacity, available_docks));
+          stationRecords.push(generateStations(knex, i, randomBikeCount, randomMaxCapacity));
         }
         return Promise.all(stationRecords);
       })

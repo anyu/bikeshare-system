@@ -249,13 +249,11 @@ module.exports = {
         {
           "id":1,
           "bike_count": 0,
-          "available_docks": 19,
           "max_capacity": 30
         },
         {
           "id": 2,
           "bike_count": 33,
-          "available_docks": 17,
           "max_capacity": 50
         }]`
     },   
@@ -272,13 +270,6 @@ module.exports = {
         example: 9
       },
       { 
-        name : 'available_docks',
-        type: 'integer',
-        required: 'required',
-        description: 'Number of open docks at the station',
-        example: 1
-      },
-      { 
         name : 'max_capacity',
         type: 'integer',
         required: 'required',
@@ -287,7 +278,6 @@ module.exports = {
       }],
       response: `{
         "bike_count": "2",
-        "available_docks": "18",
         "max_capacity": "20",
         "id": 1
       }`
@@ -308,7 +298,6 @@ module.exports = {
       {
         "id": 2,
         "bike_count": 33,
-        "available_docks": 17,
         "max_capacity": 50
       }` 
     }, 
@@ -333,13 +322,6 @@ module.exports = {
         example: 9
       },
       { 
-        name : 'available_docks',
-        type: 'integer',
-        required: 'optional',
-        description: 'Number of open docks at the station',
-        example: 1
-      },
-      { 
         name : 'max_capacity',
         type: 'integer',
         required: 'optional',
@@ -349,7 +331,6 @@ module.exports = {
       response: `
       {
         "bike_count": "2",
-        "available_docks": "18",
         "max_capacity": "20",
         "id": 1
       }`      
@@ -456,7 +437,6 @@ module.exports = {
         "station": {
           "id": 2,
           "bike_count": 3,
-          "available_docks": 17,
           "max_capacity": 20
         },
         "member": {
@@ -507,7 +487,6 @@ module.exports = {
         "station": {
           "id": 2,
           "bike_count": 3,
-          "available_docks": 17,
           "max_capacity": 20
         },
         "member": {

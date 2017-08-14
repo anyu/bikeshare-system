@@ -13,7 +13,6 @@ exports.up = function(knex, Promise) {
     knex.schema.createTableIfNotExists('stations', (table) => {
       table.increments('id').unsigned().primary();
       table.integer('bike_count').unsigned();      
-      table.integer('available_docks').unsigned();
       table.integer('max_capacity').unsigned();
     }),
     knex.schema.createTableIfNotExists('bikes', (table) => {
