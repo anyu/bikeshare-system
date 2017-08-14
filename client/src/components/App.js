@@ -1,5 +1,5 @@
 import React from 'react';
-import Template from './Template';
+import Header from './Header';
 import Sidebar from './Sidebar';
 import Main from './Main';
 
@@ -23,10 +23,9 @@ class App extends React.Component {
   render() {
     return (
       <div className="wrapper">
-        <Template>  
-          <Sidebar togglePage={this.togglePage} />
-          <Main currentPage={this.state.currentPage} />
-        </Template>  
+        <Header/>
+        <Sidebar togglePage={this.togglePage} />
+        <Main currentPage={this.state.currentPage} />
       </div>
   )}
 }
