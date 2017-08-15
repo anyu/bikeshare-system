@@ -1,3 +1,54 @@
+# CityBike Share System Data Model & API
+
+API Documentation: [link]
+
+## Development
+
+### Installing dependencies
+
+```
+brew install npm
+brew install postgresql
+```
+
+From within the root directory:
+
+```
+npm install
+```
+
+Duplicate the dotenv_example file and rename it to:
+```
+.env
+```
+
+## Database initialization/creation
+
+Ensure `postgres` is running.
+
+Create DB..
+
+
+### Run migration & seed data
+
+In terminal, from the root directory:
+
+`knex migrate:latest`
+`knex seed:run`
+
+## Running the app
+
+```
+npm run build
+npm start
+```
+
+To run tests: 
+```
+npm run test
+```
+
+
 ## Motivate Coding Project
 
 You are responsible for building a bike share system.
