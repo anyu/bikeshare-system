@@ -10,6 +10,11 @@ module.exports = {
     'database': process.env.DB_DATABASE,
     'port': process.env.DB_PORT
   },
+  'debug': false,
+  'pool': {
+    'min': 1,
+    'max': 2
+  },  
   'migrations': {
     'directory': 'db/migrations'
   },

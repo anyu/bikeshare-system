@@ -12,19 +12,31 @@ module.exports.getAllBikes = (req, res) => {
 };
 
 module.exports.addBike = (req, res) => {
-  models.Bike.forge({
-    is_available: req.body.is_available,
-    docked_station_id: req.body.docked_station_id,
-    active_rider_id: req.body.active_rider_id,
-    last_rider_id: req.body.last_rider_id
-  }).save()
-    .then((bike) => {
-      res.status(201).json(bike);
+  models.Bike.fetchAll()
+  .then((bikes) => {
+    var newBikeID = bikes.length+1;    
+    return knex("bikes").insert({
+      id: newBikeID,
+      is_available: req.body.is_available,
+      docked_station_id: req.body.docked_station_id,
+      active_rider_id: req.body.active_rider_id,
+      last_rider_id: req.body.last_rider_id
+    })
+    .then(() => {
+      models.Bike.where({ id: newBikeID }).fetch()
+      .then((bike) => {
+        res.status(201).send(bike);
+      })
     })
     .catch((err) => {
       res.sendStatus(404);
     });
+  })
+  .catch((err) => {
+    res.sendStatus(404);
+  });
 };
+
 
 module.exports.getBike = (req, res) => {
   models.Bike.where({ id: req.params.id }).fetch()
@@ -83,6 +95,9 @@ module.exports.deleteBike = (req, res) => {
 module.exports.checkAvailability = (req, res) => {
   models.Bike.where({ id: req.params.id }).fetch({ columns: ['is_available'] })
     .then((bikeAvailability) => {
+      if (!bikeAvailability) {
+        throw bikeAvailability;
+      }
       res.status(200).json(bikeAvailability);
     })
     .catch((err) => {
@@ -93,6 +108,9 @@ module.exports.checkAvailability = (req, res) => {
 module.exports.checkDockedStation = (req, res) => {
   models.Bike.where({ id: req.params.id }).fetch({ columns: ['docked_station_id'] })
     .then((bikeDockedStation) => {
+      if (!bikeDockedStation) {
+        throw bikeDockedStation;
+      }
       res.status(200).json(bikeDockedStation);
     })
     .catch((err) => {
@@ -101,9 +119,11 @@ module.exports.checkDockedStation = (req, res) => {
 };
 
 module.exports.checkLastRider = (req, res) => {
-  console.log('req.params.id',req.params.id)
   models.Bike.where({ id: req.params.id }).fetch({ columns: ['last_rider_id'] })
     .then((bikeLastRider) => {
+      if (!bikeLastRider) {
+        throw bikeLastRider;
+      }
       res.status(200).json(bikeLastRider);
     })
     .catch((err) => {

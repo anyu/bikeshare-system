@@ -5,7 +5,7 @@ exports.up = function(knex, Promise) {
       table.increments('id').unsigned().primary();
       table.string('first_name');
       table.string('last_name');
-      table.string('email').unique();
+      table.string('email');
       table.string('status').defaultTo('inactive');
       table.string('access_level').defaultTo('full');
       table.integer('ride_count').unsigned().defaultTo(0);;

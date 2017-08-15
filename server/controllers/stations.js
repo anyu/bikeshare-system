@@ -12,16 +12,27 @@ module.exports.getAllStations = (req, res) => {
 };
 
 module.exports.addStation = (req, res) => {
-  models.Station.forge({
-    bike_count: req.body.bike_count,
-    max_capacity: req.body.max_capacity
-  }).save()
-    .then((station) => {
-      res.status(201).json(station);
+  models.Station.fetchAll()
+  .then((stations) => {
+    var newStationID = stations.length+1;    
+    return knex("stations").insert({
+      id: newStationID,
+      bike_count: req.body.bike_count,
+      max_capacity: req.body.max_capacity
+    })
+    .then(() => {
+      models.Station.where({ id: newStationID }).fetch()
+      .then((station) => {
+        res.status(201).send(station);
+      })
     })
     .catch((err) => {
       res.sendStatus(404);
     });
+  })
+  .catch((err) => {
+    res.sendStatus(404);
+  });
 };
 
 module.exports.getStation = (req, res) => {
@@ -83,6 +94,9 @@ module.exports.deleteStation = (req, res) => {
 module.exports.checkBikeCount = (req, res) => {
   models.Station.where({ id: req.params.id }).fetch({ columns: ['bike_count'] })
     .then((stationBikeCount) => {
+      if (!stationBikeCount) {
+        throw stationBikeCount;
+      }
       res.status(200).json(stationBikeCount);
     })
     .catch((err) => {
@@ -106,9 +120,12 @@ module.exports.checkBikes = (req, res) => {
 
 module.exports.checkVolume = (req, res) => {
   models.Station.where({ id: req.params.id }).fetch({ columns: ['bike_count'] })
-    .then(station => {
+    .then((station) => {
+      if (!station) {
+        throw station;
+      }
       if (station.attributes.bike_count === 0) {
-        res.status(200).json({message: "Station is empty."});
+        res.status(404).json("Station is empty.");
       } else {
         res.status(200).json(station);
       }
@@ -154,13 +171,13 @@ module.exports.rentBike = (req, res) => {
               res.sendStatus(404);
             });
           } else {
-            res.send("This member cannot rent bikes.");
+            res.status(403).json("This member cannot rent bikes.");
           }
         }).catch((err) => {
           res.sendStatus(404);
         });
       } else {
-        res.send("There are no available bikes to rent at this station.");
+        res.status(403).json("There are no available bikes to rent at this station.");
       }
     }).catch((err) => {
       res.sendStatus(404);
@@ -200,7 +217,7 @@ module.exports.returnBike = (req, res) => {
           res.sendStatus(404);
         });
       } else {
-        res.send("This station is full. Please return your bike at another station.");
+        res.status(403).json("This station is full. Please return your bike at another station.");
       }
     }).catch((err) => {
       res.sendStatus(404);

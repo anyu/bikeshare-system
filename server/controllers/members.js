@@ -11,18 +11,28 @@ module.exports.getAllMembers = (req, res) => {
     });
 };
 
-
 module.exports.addMember = (req, res) => {
-  models.Member.forge({
-    first_name: req.body.first_name,
-    last_name: req.body.last_name,
-    email: req.body.email,
-    status: req.body.status || 'inactive',
-    access_level: req.body.access_level || 'full',
-    ride_count: req.body.ride_count || 0
-  }).save()
-  .then((member) => {
-    res.status(201).json(member);
+  models.Member.fetchAll()
+  .then((members) => {
+    var newMemberID = members.length+1;    
+    return knex("members").insert({
+      id: newMemberID,
+      first_name: req.body.first_name,
+      last_name: req.body.last_name,
+      email: req.body.email,
+      status: req.body.status || 'inactive',
+      access_level: req.body.access_level || 'full',
+      ride_count: req.body.ride_count || 0
+    })
+    .then(() => {
+      models.Member.where({ id: newMemberID }).fetch()
+      .then((member) => {
+        res.status(201).send(member);
+      })
+    })
+    .catch((err) => {
+      res.sendStatus(404);
+    });
   })
   .catch((err) => {
     res.sendStatus(404);
@@ -59,7 +69,13 @@ module.exports.updateMember = (req, res) => {
 };
 
 module.exports.deleteMember = (req, res) => {
-  models.Member.where({ id: req.params.id }).destroy()
+  models.Member.where({ id: req.params.id }).fetch()
+    .then((member) => {
+      if (!member) {
+        throw member;
+      } 
+      return member.destroy()
+    })
     .then(() => {
       res.status(200).json('Member deleted');
     })
@@ -71,6 +87,9 @@ module.exports.deleteMember = (req, res) => {
 module.exports.checkRideCount = (req, res) => {
   models.Member.where({ id: req.params.id }).fetch({ columns: ['ride_count'] })
     .then((memberRideCount) => {
+      if (!memberRideCount) {
+        throw memberRideCount;
+      } 
       res.status(200).json(memberRideCount);
     })
     .catch((err) => {
@@ -80,9 +99,12 @@ module.exports.checkRideCount = (req, res) => {
 
 module.exports.checkStatus = (req, res) => {
   models.Member.where({ id: req.params.id }).fetch({ columns: ['status'] })
-    .then((memberStatus) => {
-      res.status(200).json(memberStatus);
-    })
+  .then((memberStatus) => {
+    if (!memberStatus) {
+      throw memberStatus;
+    } 
+    res.status(200).json(memberStatus);
+  })
     .catch((err) => {
       res.sendStatus(404);
     });
