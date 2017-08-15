@@ -6,9 +6,9 @@ bookshelf.plugin('pagination');
 
 const Member = bookshelf.Model.extend({
   tableName: 'members',  
-  bike: function() {
-    return this.hasOne('Bike');
-  }
+  trips: function() {
+    return this.hasMany('Trip');
+  },
 });
 module.exports = bookshelf.model('Member', Member);
 

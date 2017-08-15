@@ -1,22 +1,28 @@
 const faker = require('faker');
 
-let generateMembers = (knex, index, status, access_level) => {
+let generateMembers = (knex, index, access_level) => {
   return knex('members').insert([
     {id: index, first_name: faker.name.firstName(), last_name: faker.name.lastName(), 
-    email: faker.internet.email(), status: status, access_level: access_level, 'ride_count': Math.floor(faker.random.number()/500)}
+    email: faker.internet.email(), access_level: access_level}
   ])
 };
 
-let generateStations = (knex, index, bike_count, max_capacity) => {
+let generateStations = (knex, index, max_capacity) => {
   return knex('stations').insert([
-    {id: index, bike_count: bike_count, max_capacity: max_capacity}
+    {id: index, name: faker.address.streetName(), zipcode: faker.address.zipCode(), max_capacity: max_capacity}
   ])
 };
 
-let generateBikes = (knex, index, is_available, docked_station_id, active_rider_id, last_rider_id) => {
+let generateBikes = (knex, index, status, docked_station_id) => {
   return knex('bikes').insert([
-    {id: index, is_available: is_available, docked_station_id: docked_station_id, 
-    active_rider_id: active_rider_id, last_rider_id: last_rider_id}
+    {id: index, status: status, docked_station_id: docked_station_id}
+  ])
+};
+
+
+let generateTrips = (knex, index, status, rider_id, bike_id, start_station_id, end_station_id) => {
+  return knex('trips').insert([
+    {id: index, status: status, start_time: start_time, end_time: end_time, start_station_id: start_station_id, end_station_id: end_station_id}
   ])
 };
 
@@ -29,49 +35,58 @@ getRandomInt = (min, max) => {
 
 exports.seed = function(knex, Promise) {
   // Deletes all existing entries
-  return knex('bikes').del()
+  return knex('trips').del()
   .then(() => {
-    return knex('stations').del()
+    return knex('bikes').del()
     .then(() => {
-      return knex('members').del()
+      return knex('stations').del()
       .then(() => {
-        // Inserts seed entries
-        let memberRecords = [];
-        let statusOptions = ['active', 'inactive'];
-        let accessLevelOptions = ['full', 'none'];
+        return knex('members').del()
+        .then(() => {
+          // Inserts seed entries
+          let memberRecords = [];
+          let accessLevelOptions = ['full', 'none'];
 
-        for (let i = 1; i <= 1000; i++) {
-          let randomStatus = statusOptions[getRandomInt(0, statusOptions.length)];
-          let randomAccessLevel = accessLevelOptions[getRandomInt(0, accessLevelOptions.length)];
-          memberRecords.push(generateMembers(knex, i, randomStatus, randomAccessLevel));
-        }
-        return Promise.all(memberRecords);
-      })
-      .then(() => {
-        // Inserts seed entries
-        let stationRecords = [];
-        let maxCapacityOptions = [10, 20, 30, 40, 50];
+          for (let i = 1; i <= 1000; i++) {
+            let randomAccessLevel = accessLevelOptions[getRandomInt(0, accessLevelOptions.length)];
+            memberRecords.push(generateMembers(knex, i, randomAccessLevel));
+          }
+          return Promise.all(memberRecords);
+        })
+        .then(() => {
+          let stationRecords = [];
+          let maxCapacityOptions = [10, 20, 30, 40, 50];
 
-        for (let i = 1; i <= 10; i++) {
-          let randomMaxCapacity = maxCapacityOptions[getRandomInt(0, maxCapacityOptions.length)];
-          let randomBikeCount = getRandomInt(0, randomMaxCapacity);
-          stationRecords.push(generateStations(knex, i, randomBikeCount, randomMaxCapacity));
-        }
-        return Promise.all(stationRecords);
-      })
-      .then(() => {
-        // Inserts seed entries
-        let bikeRecords = [];
-        let availability = [true, false];
+          for (let i = 1; i <= 10; i++) {
+            let randomMaxCapacity = maxCapacityOptions[getRandomInt(0, maxCapacityOptions.length)];
+            stationRecords.push(generateStations(knex, i, randomMaxCapacity));
+          }
+          return Promise.all(stationRecords);
+        })
+        .then(() => {
+          let bikeRecords = [];
+          let status = ['available', 'unavailable'];
 
-        for (let i = 1; i <= 200; i++) {
-          let randomAvailability = availability[getRandomInt(0, availability.length)];
-          let randomDockedStation = getRandomInt(1, 11);
-          let randomActiveRider = getRandomInt(1, 1001);
-          let randomLastRider = getRandomInt(1, 1001);
-          bikeRecords.push(generateBikes(knex, i, randomAvailability, randomDockedStation, randomActiveRider, randomLastRider));
-        }
-        return Promise.all(bikeRecords);
+          for (let i = 1; i <= 200; i++) {
+            let randomStatus = status[getRandomInt(0, status.length)];
+            let randomDockedStation = getRandomInt(1, 11);
+            bikeRecords.push(generateBikes(knex, i, randomStatus, randomDockedStation));
+          }
+          return Promise.all(bikeRecords);
+        });
+        // TO DO: seed trips (need to generate timestamps, start/end stations that make sense)
+        // .then(() => {
+        //   let tripRecords = [];
+        //   let status = [null, 'ongoing', 'ended'];
+
+        //   for (let i = 1; i <= 200; i++) {
+        //     let randomStatus = status[getRandomInt(0, status.length)];
+        //     let randomStartStation = getRandomInt(1, 11);
+        //     let randomEndStation = getRandomInt(1, 11);
+        //     tripRecords.push(generateTrips(knex, i, status, rider_id, bike_id, start_station_id, end_station_id));
+        //   }
+        //   return Promise.all(tripRecords);
+        // });        
       });
     });
   });
