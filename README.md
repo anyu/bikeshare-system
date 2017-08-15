@@ -1,6 +1,6 @@
 # CityBike Data Model & API
 
-API Documentation: [link]
+API Documentation: https://citybike-developers.herokuapp.com
 
 ## Development
 
