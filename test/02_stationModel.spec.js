@@ -1,6 +1,7 @@
 const expect = require('chai').expect;
 const Station = require('../db/models/station.js');
 const dbUtils = require('../db/lib/utils.js');
+const knex = require('../db/config').knex;
 
 describe('Station model tests', () => {
   beforeEach((done) => {
@@ -20,6 +21,29 @@ describe('Station model tests', () => {
       .catch((err) => {
         done(err);
       });
+  });
+
+  it('should add a new record', (done) => {
+    Station.fetchAll()
+    .then((stations) => {
+      var newStationID = stations.length+1;    
+      return knex("stations").insert({
+        id: newStationID,
+        bike_count: 3,
+        max_capacity: 30
+      })
+      .then(() => {
+        return Station.where({ id: newStationID }).fetch()
+      })
+      .then((result) => {
+        expect(result.get('bike_count')).to.equal(3);
+        expect(result.get('max_capacity')).to.equal(30);
+        done();
+      })
+      .catch((err) => {
+        done(err);
+      });
+    });
   });
 
   it('should update an already existing record', (done) => {

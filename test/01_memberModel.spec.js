@@ -1,6 +1,8 @@
 const expect = require('chai').expect;
 const Member = require('../db/models/member.js');
 const dbUtils = require('../db/lib/utils.js');
+const knex = require('../db/config').knex;
+
 
 describe('Member model tests', () => {
   beforeEach((done) => {
@@ -22,28 +24,32 @@ describe('Member model tests', () => {
       });
   });
 
-  // it('should add a new record', (done) => {
-  //   Member.forge({
-  //     id: 1001,
-  //     first_name: 'Phil',
-  //     last_name: 'Toberson',
-  //     email: 'phil.toberson@gmail.com',
-  //     status: 'inactive',
-  //     access_level: 'full',
-  //     ride_count: 0
-  //   }).save()
-  //     .then(() => {
-  //       return Member.where({ email: 'phil.toberson@gmail.com' }).fetch()
-  //     })
-  //     .then((result) => {
-  //       expect(result.get('first_name')).to.equal('Phil');
-  //       expect(result.get('status')).to.equal('inactive');
-  //       done();
-  //     })
-  //     .catch((err) => {
-  //       done(err);
-  //     });
-  // });
+  it('should add a new record', (done) => {
+    Member.fetchAll()
+    .then((members) => {
+      var newMemberID = members.length+1;    
+      return knex("members").insert({
+        id: newMemberID,
+        first_name: 'Tobias',
+        last_name: 'Funke',
+        email: 'tobs.funke@gmail.com',
+        status: 'inactive',
+        access_level: 'full',
+        ride_count: 0
+      })
+      .then(() => {
+        return Member.where({ email: 'tobs.funke@gmail.com' }).fetch()
+      })
+      .then((result) => {
+        expect(result.get('first_name')).to.equal('Tobias');
+        expect(result.get('status')).to.equal('inactive');
+        done();
+      })
+      .catch((err) => {
+        done(err);
+      });
+    });
+  });
 
   it('should update an already existing record', (done) => {
     Member.where({ id: 1 }).fetch()
