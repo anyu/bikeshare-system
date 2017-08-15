@@ -49,59 +49,43 @@ describe('Stations API', () => {
       .end(done);
   });
 
-  // it('should accept POST requests to /api/stations', (done) => {
-  //   request(app)
-  //     .post('/api/stations')
-  //     .send({
-  //       first_name: 'Joe',
-  //       last_name: 'Shmo',
-  //       email: 'joe@gmail.com'
-  //     })
-  //     .expect((res) => {
-  //       res.body = {
-  //         first_name: res.body.first_name,
-  //         last_name: res.body.last_name,
-  //         email: res.body.email
-  //       };
-  //     })
-  //     .expect(201, {
-  //       first_name: 'Yo',
-  //       last_name: 'Dawg',
-  //       email: 'yoda'
-  //     })
-  //     .end(done);
-  // });
+  it('should accept POST requests to /api/stations', (done) => {
+    let newStation = {
+      bike_count: 3,
+      max_capacity: 30
+    }
+    request(app)
+      .post('/api/stations')
+      .type('form')
+      .send(newStation)
+      .expect((res) => {
+        res.body = {
+          bike_count: res.body.bike_count,
+          max_capacity: res.body.max_capacity
+        };
+      })
+      .expect((201), newStation)
+      .end(done);
+  });
 
-  // it('should accept PUT requests to /api/stations/:id', () => {
-  //   let member = {
-  //     first_name: 'Angela',
-  //     last_name: 'Yangela',
-  //     email: 'ay@gmail.com',
-  //   };
-  //   return request(app)
-  //     .put('/api/stations/1')
-  //     .send(member)
-  //     .expect(201)
-  //     .then(() => {
-  //       return request(app)
-  //         .get('/api/stations/1')
-  //         .expect((res) => {
-  //           res.body = {
-  //             first_name: res.body.first,
-  //             last_name: res.body.last,
-  //             email: res.body.email,
-  //           };
-  //         })
-  //         .expect(200, member);
-  //     });
-  // });
-
-  // it('sends 404 if id on PUT requests to /api/stations/:id does not exist',  (done) => {
-  //   request(app)
-  //     .put('/api/stations/123')
-  //     .expect(404)
-  //     .end(done);
-  // });
+  it('should accept PUT requests to /api/stations/:id', (done) => {
+    let updatedStation = {
+      bike_count: 4,
+      max_capacity: 20
+    }
+    request(app)
+      .put('/api/stations/1')
+      .type('form')
+      .send(updatedStation)
+      .expect((res) => {
+        res.body = {
+          bike_count: res.body.bike_count,
+          max_capacity: res.body.max_capacity
+        };
+      })
+      .expect((200), updatedStation)
+      .end(done);
+  });
 
   it('should accept DELETE requests to /api/stations/:id',  (done) => {
     request(app)

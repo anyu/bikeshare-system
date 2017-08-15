@@ -60,7 +60,7 @@ module.exports.updateBike = (req, res) => {
       return bike.save(req.body, { method: 'update' });
     })
     .then((bike) => {
-      res.status(201).json(bike);
+      res.status(200).json(bike);
     })
     .catch((err) => {
       res.sendStatus(404);

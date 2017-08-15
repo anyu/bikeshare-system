@@ -60,8 +60,8 @@ module.exports.updateMember = (req, res) => {
       }
       return member.save(req.body, { method: 'update' });
     })
-    .then(() => {
-      res.sendStatus(201);
+    .then((member) => {
+      res.status(200).json(member);
     })
     .catch((err) => {
       res.sendStatus(404);

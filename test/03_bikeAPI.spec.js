@@ -49,59 +49,51 @@ describe('Bikes API', () => {
       .end(done);
   });
 
-  // it('should accept POST requests to /api/bikes', (done) => {
-  //   request(app)
-  //     .post('/api/bikes')
-  //     .send({
-  //       first_name: 'Joe',
-  //       last_name: 'Shmo',
-  //       email: 'joe@gmail.com'
-  //     })
-  //     .expect((res) => {
-  //       res.body = {
-  //         first_name: res.body.first_name,
-  //         last_name: res.body.last_name,
-  //         email: res.body.email
-  //       };
-  //     })
-  //     .expect(201, {
-  //       first_name: 'Yo',
-  //       last_name: 'Dawg',
-  //       email: 'yoda'
-  //     })
-  //     .end(done);
-  // });
+  it('should accept POST requests to /api/bikes', (done) => {
+    let newBike = {
+      is_available: true,
+      docked_station_id: 9,
+      active_rider_id: 2,
+      last_rider_id: 3
+    }
+    request(app)
+      .post('/api/bikes')
+      .type('form')
+      .send(newBike)
+      .expect((res) => {
+        res.body = {
+          is_available: res.body.is_available,
+          docked_station_id: res.body.docked_station_id,
+          active_rider_id: res.body.active_rider_id,
+          last_rider_id: res.body.last_rider_id
+        };
+      })
+      .expect((201), newBike)
+      .end(done);
+  });
 
-  // it('should accept PUT requests to /api/bikes/:id', () => {
-  //   let member = {
-  //     first_name: 'Angela',
-  //     last_name: 'Yangela',
-  //     email: 'ay@gmail.com',
-  //   };
-  //   return request(app)
-  //     .put('/api/bikes/1')
-  //     .send(member)
-  //     .expect(201)
-  //     .then(() => {
-  //       return request(app)
-  //         .get('/api/bikes/1')
-  //         .expect((res) => {
-  //           res.body = {
-  //             first_name: res.body.first,
-  //             last_name: res.body.last,
-  //             email: res.body.email,
-  //           };
-  //         })
-  //         .expect(200, member);
-  //     });
-  // });
-
-  // it('sends 404 if id on PUT requests to /api/bikes/:id does not exist',  (done) => {
-  //   request(app)
-  //     .put('/api/bikes/123')
-  //     .expect(404)
-  //     .end(done);
-  // });
+  it('should accept PUT requests to /api/bikes/:id', (done) => {
+    let updatedBike = {
+      is_available: false,
+      docked_station_id: 2,
+      active_rider_id: 8,
+      last_rider_id: 5
+    }
+    request(app)
+      .put('/api/bikes/1')
+      .type('form')
+      .send(updatedBike)
+      .expect((res) => {
+        res.body = {
+          is_available: JSON.parse(res.body.is_available),
+          docked_station_id: JSON.parse(res.body.docked_station_id),
+          active_rider_id: JSON.parse(res.body.active_rider_id),
+          last_rider_id: JSON.parse(res.body.last_rider_id)
+        };
+      })
+      .expect((200), updatedBike)
+      .end(done);
+  });
 
   it('should accept DELETE requests to /api/bikes/:id',  (done) => {
     request(app)

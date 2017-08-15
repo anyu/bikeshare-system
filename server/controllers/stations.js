@@ -57,7 +57,7 @@ module.exports.updateStation = (req, res) => {
       return station.save(req.body, { method: 'update' });
     })
     .then((station) => {
-      res.status(201).json(station);
+      res.status(200).json(station);
     })
     .catch((err) => {
       res.sendStatus(404);
