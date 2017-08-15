@@ -26,8 +26,8 @@ router.route('/:id/bikes')
 ;
 
 // Endpoint to check whether a station is empty
-router.route('/:id/volume')
-  .get(StationController.checkVolume)
+router.route('/:id/is_empty')
+  .get(StationController.checkIfEmpty)
 ;
 
 // Endpoint to rent bike at a station

@@ -17,10 +17,8 @@ module.exports.addBike = (req, res) => {
     var newBikeID = bikes.length+1;    
     return knex("bikes").insert({
       id: newBikeID,
-      is_available: req.body.is_available,
-      docked_station_id: req.body.docked_station_id,
-      active_rider_id: req.body.active_rider_id,
-      last_rider_id: req.body.last_rider_id
+      status: req.body.status,
+      docked_station_id: req.body.docked_station_id
     })
     .then(() => {
       models.Bike.where({ id: newBikeID }).fetch()
@@ -36,7 +34,6 @@ module.exports.addBike = (req, res) => {
     res.sendStatus(404);
   });
 };
-
 
 module.exports.getBike = (req, res) => {
   models.Bike.where({ id: req.params.id }).fetch()
@@ -67,33 +64,22 @@ module.exports.updateBike = (req, res) => {
     });
 };
 
+// TODO: ADDRESS CASE OF BIKE CURRENTLY BEING RIDDEN
 module.exports.deleteBike = (req, res) => {
-  models.Bike.where({ id: req.params.id }).fetch({ columns: ['docked_station_id'] })
-    .tap((bike) => {
-      models.Station.where({ id: bike.attributes.docked_station_id }).fetch()
-      .then((station) => {
-        return station.save({'bike_count': station.attributes.bike_count-1}, {method: 'update',patch: true});
-      })
-      .then(() => {
-        models.Bike.where({ id: req.params.id }).fetch()
-        .tap((bike) => {
-          return bike.destroy()     
-        })     
-        .then(() => {
-          res.status(200).json('Bike deleted');
-        })
-      })
-    })
-    .catch((err) => {
-      res.sendStatus(404);
-    })
+  models.Bike.where({ id: req.params.id }).fetch()
+  .then((bike) => {
+    return bike.destroy()     
+  })     
+  .then(() => {
+    res.status(200).json('Bike deleted');
+  })
   .catch((err) => {
     res.sendStatus(404);
   });
 };
 
 module.exports.checkAvailability = (req, res) => {
-  models.Bike.where({ id: req.params.id }).fetch({ columns: ['is_available'] })
+  models.Bike.where({ id: req.params.id }).fetch({ columns: ['status'] })
     .then((bikeAvailability) => {
       if (!bikeAvailability) {
         throw bikeAvailability;
@@ -118,6 +104,7 @@ module.exports.checkDockedStation = (req, res) => {
     });
 };
 
+// TO UPDATE
 module.exports.checkLastRider = (req, res) => {
   models.Bike.where({ id: req.params.id }).fetch({ columns: ['last_rider_id'] })
     .then((bikeLastRider) => {

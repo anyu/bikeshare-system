@@ -17,7 +17,8 @@ module.exports.addStation = (req, res) => {
     var newStationID = stations.length+1;    
     return knex("stations").insert({
       id: newStationID,
-      bike_count: req.body.bike_count,
+      name: req.body.name,
+      zipcode: req.body.zipcode,
       max_capacity: req.body.max_capacity
     })
     .then(() => {
@@ -92,16 +93,16 @@ module.exports.deleteStation = (req, res) => {
 };
 
 module.exports.checkBikeCount = (req, res) => {
-  models.Station.where({ id: req.params.id }).fetch({ columns: ['bike_count'] })
-    .then((stationBikeCount) => {
-      if (!stationBikeCount) {
-        throw stationBikeCount;
-      }
-      res.status(200).json(stationBikeCount);
-    })
-    .catch((err) => {
-      res.sendStatus(404);
-    });
+  models.Bike.where({ docked_station_id: req.params.id }).fetchAll() 
+  .then((bikes) => {
+    if (!bikes) {
+      throw bikes;
+    }
+    res.status(200).json({ bike_count: bikes.length });
+  })
+  .catch((err) => {
+    res.sendStatus(404);
+  });    
 };
 
 module.exports.checkBikes = (req, res) => {
@@ -118,23 +119,21 @@ module.exports.checkBikes = (req, res) => {
     });
 };
 
-module.exports.checkVolume = (req, res) => {
-  models.Station.where({ id: req.params.id }).fetch({ columns: ['bike_count'] })
-    .then((station) => {
-      if (!station) {
-        throw station;
-      }
-      if (station.attributes.bike_count === 0) {
-        res.status(404).json("Station is empty.");
-      } else {
-        res.status(200).json(station);
-      }
-    })
-    .catch((err) => {
-      res.sendStatus(404);
-    });
+module.exports.checkIfEmpty = (req, res) => {
+  var is_empty = false;
+  models.Bike.where({ docked_station_id: req.params.id }).fetchAll() 
+  .then((bikes) => {
+    if (bikes.length === 0) {
+      is_empty = true;
+    }
+    res.status(200).json({ is_empty: is_empty });
+  })
+  .catch((err) => {
+    res.sendStatus(404);
+  }); 
 };
 
+// TODO: FIX
 module.exports.rentBike = (req, res) => {
   models.Station.where({ id: req.params.id }).fetch()
     .then((station) => {
@@ -184,7 +183,7 @@ module.exports.rentBike = (req, res) => {
     });
 };
 
-
+// TODO: FIX
 module.exports.returnBike = (req, res) => {
   models.Station.where({ id: req.params.id }).fetch()
     .then((station) => {

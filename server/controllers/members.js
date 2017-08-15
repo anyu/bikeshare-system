@@ -20,9 +20,7 @@ module.exports.addMember = (req, res) => {
       first_name: req.body.first_name,
       last_name: req.body.last_name,
       email: req.body.email,
-      status: req.body.status || 'inactive',
-      access_level: req.body.access_level || 'full',
-      ride_count: req.body.ride_count || 0
+      access_level: req.body.access_level || 'full'
     })
     .then(() => {
       models.Member.where({ id: newMemberID }).fetch()
@@ -84,6 +82,7 @@ module.exports.deleteMember = (req, res) => {
     });
 };
 
+// TODO: FIX
 module.exports.checkRideCount = (req, res) => {
   models.Member.where({ id: req.params.id }).fetch({ columns: ['ride_count'] })
     .then((memberRideCount) => {
@@ -97,6 +96,7 @@ module.exports.checkRideCount = (req, res) => {
     });
 };
 
+// TODO: FIX
 module.exports.checkStatus = (req, res) => {
   models.Member.where({ id: req.params.id }).fetch({ columns: ['status'] })
   .then((memberStatus) => {

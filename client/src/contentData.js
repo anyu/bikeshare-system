@@ -15,18 +15,14 @@ module.exports = {
             "first_name": "Khalid",
             "last_name": "Sanford",
             "email": "Marcel.Watsica@yahoo.com",
-            "status": "inactive",
-            "access_level": "none",
-            "ride_count": 157
+            "access_level": "none"
           },
           {
             "id":2,
             "first_name": "Manley",
             "last_name": "Wisozk",
             "email": "Gerald.Upton@gmail.com",
-            "status": "active",
             "access_level": "none",
-            "ride_count": 112
         }]`
       },
       'Add a member':
@@ -56,36 +52,20 @@ module.exports = {
           example: 'lynnhill@gmail.com'
         },
         { 
-          name : 'status',
-          type: 'string',
-          required: 'optional',
-          description: "Whether or not the member is on a ride. Defaults to 'inactive' if not specified.",
-          example: 'inactive'
-        },
-        { 
           name : 'access_level',
           type: 'string',
           required: 'optional',
           description: "Whether or not the member can rent a bike. Defaults to 'full' if not specified.",
           example: 'full'
-        },
-        { 
-          name : 'ride_count',
-          type: 'integer',
-          required: 'optional',
-          description: 'Number of rides the member has taken. Defaults to 0 if not specified.',
-          example: '0'
-        }           
+        }        
       ],
         response: 
         `{
+          "id": 8,
           "first_name": "Beth",
           "last_name": "Rodden",
           "email": "bethrodden@gmail.com",
-          "status": "active",
-          "access_level": "full",
-          "ride_count": 0,
-          "id": 8
+          "access_level": "full"
         }`
       },
       'Retrieve a member':
@@ -106,9 +86,7 @@ module.exports = {
           "first_name": "Manley",
           "last_name": "Wisozk", 
           "email": "Gerald.Upton@gmail.com",
-          "status": "active",
-          "access_level": "none",
-          "ride_count": 112
+          "access_level": "none"
         }`
     },  
     'Update a member':
@@ -145,34 +123,18 @@ module.exports = {
         example: 'lynnhill@gmail.com'
       },
       { 
-        name : 'status',
-        type: 'string',
-        required: 'optional',
-        description: "Whether or not the member is on a ride. Defaults to 'inactive'",
-        example: 'inactive'
-      },
-      { 
         name : 'access_level',
         type: 'string',
         required: 'optional',
         description: "Whether or not the member can rent a bike. Defaullts to 'full'",
         example: 'full'
-      },
-      { 
-        name : 'ride_count',
-        type: 'integer',
-        required: 'optional',
-        description: 'Number of rides the member has taken. Defaults to 0.',
-        example: '0'
       }],
       response: `{
+        "id": 8,        
         "first_name": "Joe",
         "last_name": "Shmo",
         "email": "joeshmo@gmail.com",
-        "status": "active",
-        "access_level": "full",
-        "ride_count": 0,
-        "id": 8
+        "access_level": "full"
       }`
     },
     'Delete a member':
@@ -383,11 +345,11 @@ module.exports = {
         "bikeIDs": [11, 27, 31, 37, 164, 175, 194]
       }`
     }, 
-    'Retrieve volume':
+    'Retrieve if station is empty':
     {
       summary: 'Returns whether or not the station with the given ID is empty.',
       method: 'GET',
-      resource_url: '/api/stations/:id/volume',
+      resource_url: '/api/stations/:id/is_empty',
       params: [{ 
         name : 'station_id',
         type: 'integer',
@@ -429,10 +391,8 @@ module.exports = {
       response: `{
         "bike": {
           "id": 2,
-          "is_available": false,
-          "docked_station_id": 1,
-          "active_rider_id": 2,
-          "last_rider_id": 233
+          "status": "available",
+          "docked_station_id": 1
         },
         "station": {
           "id": 2,
@@ -444,9 +404,7 @@ module.exports = {
           "first_name": "Sage",
           "last_name": "Orn",
           "email": "Marisol.Roberts11@yahoo.com",
-          "status": "active",
-          "access_level": "full",
-          "ride_count": 46
+          "access_level": "full"
         }
       }`
     }, 
@@ -479,10 +437,8 @@ module.exports = {
       response: `{
         "bike": {
           "id": 2,
-          "is_available": false,
-          "docked_station_id": 1,
-          "active_rider_id": 2,
-          "last_rider_id": 233
+          "status": "available",
+          "docked_station_id": 1
         },
         "station": {
           "id": 2,
@@ -494,9 +450,7 @@ module.exports = {
           "first_name": "Sage",
           "last_name": "Orn",
           "email": "Marisol.Roberts11@yahoo.com",
-          "status": "active",
-          "access_level": "full",
-          "ride_count": 46
+          "access_level": "full"
         }
       }`
     },   
@@ -508,17 +462,15 @@ module.exports = {
       response: `[
         {
           "id":1,
-          "is_available": false,
+          "status": true,
           "docked_station_id": 8,
-          "active_rider_id": 331,
-          "last_rider_id": 383
         },
         {
           "id": 2,
-          "is_available": false,
-          "docked_station_id": 3,
-          "active_rider_id": 419,
-          "last_rider_id": 639
+          "name": "Washington & Third",
+          "zipcode": "94506",
+          "status": "available",
+          "docked_station_id": 3
         }]`
     },   
     'Add a bike':
@@ -527,41 +479,32 @@ module.exports = {
       method: 'POST',
       resource_url: '/api/bikes',
       params: [{ 
-        name : 'is_available',
-        type: 'boolean',
+        name : 'status',
+        type: 'string',
         required: 'required',
         description: 'Whether or not the bike is available for rent',
-        example: 2
+        example: "available"
       },
+      {
+        name : 'name',
+        type: 'integer',
+        required: 'optional',
+        description: 'ID of the member currently riding the bike',
+        example: "Washington & Third",
+      },    
       { 
         name : 'docked_station_id',
         type: 'integer',
         required: 'required',
         description: 'Station where the bike is docked',
         example: 501
-      },
-      {
-        name : 'active_rider_id',
-        type: 'integer',
-        required: 'optional',
-        description: 'ID of the member currently riding the bike',
-        example: 2
-      },
-      {
-        name : 'last_rider_id',
-        type: 'integer',
-        required: 'optional',
-        description: 'ID of the member who last rode the bike',
-        example: 2
-      }      
+      }   
     ],
       response: `
       {
         "id": 2,
-        "is_available": true,
-        "docked_station_id": 1,
-        "active_rider_id": 5,
-        "last_rider_id": 626
+        "status": "available",
+        "docked_station_id": 1
       }`
     }, 
     'Retrieve a bike':
@@ -579,10 +522,8 @@ module.exports = {
       response: `
       {
         "id": 2,
-        "is_available": false,
-        "docked_station_id": 1,
-        "active_rider_id": 5,
-        "last_rider_id": 626
+        "status": "available",
+        "docked_station_id": 1
       }`
     }, 
     'Update a bike':
@@ -598,11 +539,11 @@ module.exports = {
         example: 2
       },
       { 
-        name : 'is_available',
-        type: 'boolean',
+        name : 'status',
+        type: 'string',
         required: 'optional',
         description: 'Whether or not the bike is available for rent',
-        example: 'true'
+        example: 'available'
       },
       { 
         name : 'docked_station_id',
@@ -610,28 +551,12 @@ module.exports = {
         required: 'optional',
         description: 'Station where the bike is docked',
         example: 8
-      },
-      { 
-        name : 'active_rider_id',
-        type: 'integer',
-        required: 'optional',
-        description: 'ID of the member currently riding the bike',
-        example: 253
-      },
-      { 
-        name : 'last_rider_id',
-        type: 'integer',
-        required: 'optional',
-        description: 'ID of the member who last rode the bike',
-        example: 421
       }],
       response: `      
       {
         "id": 2,
-        "is_available": false,
-        "docked_station_id": 1,
-        "active_rider_id": 5,
-        "last_rider_id": 626
+        "status": "available",
+        "docked_station_id": 1
       }`
     }, 
     'Delete a bike':
