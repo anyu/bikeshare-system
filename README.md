@@ -1,4 +1,4 @@
-# CityBike Share System Data Model & API
+# CityBike Data Model & API
 
 API Documentation: [link]
 
@@ -17,7 +17,7 @@ From within the root directory:
 npm install
 ```
 
-Duplicate the dotenv_example file and rename it to:
+Duplicate the example.env file and rename it to:
 ```
 .env
 ```
@@ -33,8 +33,10 @@ Create DB..
 
 In terminal, from the root directory:
 
-`knex migrate:latest`
-`knex seed:run`
+```
+knex migrate:latest
+knex seed:run
+```
 
 ## Running the app
 
@@ -47,6 +49,8 @@ To run tests:
 ```
 npm run test
 ```
+
+---
 
 
 ## Motivate Coding Project
