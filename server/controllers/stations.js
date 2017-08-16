@@ -133,10 +133,9 @@ module.exports.checkIfEmpty = (req, res) => {
   }); 
 };
 
-// TODO: REVIEW
 module.exports.rentBike = (req, res) => {
  // if station has available bikes
-  models.Bike.where({ docked_station_id: req.params.id, status: "available" }).fetch()
+  models.Bike.where({ docked_station_id: req.params.id, status: 'available' }).fetch()
   .tap((bike) => {
     if (bike) {
       models.Member.where({id: req.body.member_id}).fetch()
@@ -146,20 +145,30 @@ module.exports.rentBike = (req, res) => {
           var bikeStatus = {'status': 'unavailable', docked_station_id: null};
           bike.save(bikeStatus, {method: 'update',patch: true})
           .then(() => {
-            models.Trip.forge({ 
-              status: "ongoing", 
-              start_time: new Date().toISOString(),
-              rider_id: req.body.member_id,
-              start_station_id: req.params.id,
-              bike_id: bike.attributes.id
-            }).save()
-            .then(() => {                                
-              res.status(200).json({bike, trip});
+            models.Trip.fetchAll()
+            .then((trips) => {
+              var tripID = trips.length+1;   
+              return knex("trips").insert({
+                id: tripID,
+                status: 'ongoing', 
+                start_time: new Date().toISOString(),
+                end_time: null,
+                rider_id: req.body.member_id,
+                bike_id: bike.attributes.id,
+                start_station_id: req.params.id,
+                end_station_id: null              
+              })
+              .then(() => {      
+                models.Trip.where({ id: tripID }).fetch()
+                .then((trip) => {
+                  res.status(200).json({bike, trip});
+                })
+              }).catch((err) => {
+                res.sendStatus(404);
+              });
             }).catch((err) => {
               res.sendStatus(404);
             });
-          }).catch((err) => {
-            res.sendStatus(404);
           });
         } else {
           res.status(403).json("This member cannot rent bikes.");
@@ -175,8 +184,6 @@ module.exports.rentBike = (req, res) => {
   });
 };
 
-
-// TODO: REVIEW
 module.exports.returnBike = (req, res) => {
   models.Bike.where({ docked_station_id: req.params.id }).fetchAll()
   .tap((bikes) => {
@@ -189,14 +196,15 @@ module.exports.returnBike = (req, res) => {
           var bikeParams = {'docked_station_id': req.params.id, 'status': 'available'};
           bike.save(bikeParams, {method: 'update',patch: true})
           .tap(() => {   
-            models.Trip.where({id: req.body.trip_id}).fetch()
+            models.Trip.where({bike_id: req.body.bike_id, status: 'ongoing'}).fetch()
             .tap((trip) => {
               var tripParams = {'status': 'ended', 'end_time': new Date().toISOString(), end_station_id: req.params.id};
-              trip.save(bikeParams, {method: 'update',patch: true})
-            }).then(() => {                                
-              res.status(200).json({bike, trip});
-            }).catch((err) => {
-              res.sendStatus(404);
+              trip.save(tripParams, {method: 'update',patch: true})
+              .tap((trip) => {      
+                res.status(200).json({bike, trip});
+              }).catch((err) => {
+                res.sendStatus(404);
+              });
             });
           }).catch((err) => {
             res.sendStatus(404);

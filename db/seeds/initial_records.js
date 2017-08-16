@@ -84,7 +84,11 @@ exports.seed = function(knex, Promise) {
 
           for (let i = 1; i <= 200; i++) {
             let randomStatus = status[getRandomInt(0, status.length)];
-            let randomDockedStation = getRandomInt(1, 11);
+            if (randomStatus === 'available') {
+              var randomDockedStation = getRandomInt(1, 11);
+            } else {
+              randomDockedStation = null;
+            }
             bikeRecords.push(generateBikes(knex, i, randomStatus, randomDockedStation));
           }
           return Promise.all(bikeRecords);
@@ -98,7 +102,7 @@ exports.seed = function(knex, Promise) {
             let randomPastTimes = getRandomPastTimes();
             let randomStartTime = randomPastTimes[0];
             let randomEndTime = randomPastTimes[1];
-            let randomRider = getRandomInt(1, 1000);
+            let randomRider = getRandomInt(1, 100); // use subset of member population to get some trips with the same rider
             let randomBike = getRandomInt(1, 200);            
             let randomStartStation = getRandomInt(1, 11);
             let randomEndStation = getRandomInt(1, 11);
@@ -111,7 +115,7 @@ exports.seed = function(knex, Promise) {
             let randomPastTimes = getRandomPastTimes();
             let randomStartTime = randomPastTimes[0];
             let randomEndTime = null;
-            let randomRider = getRandomInt(1, 1000);
+            let randomRider = getRandomInt(1, 100); // use subset of member population to get some trips with the same rider
             let randomBike = getRandomInt(1, 200);            
             let randomStartStation = getRandomInt(1, 11);
             let randomEndStation = null;

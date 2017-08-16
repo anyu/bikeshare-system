@@ -6,7 +6,6 @@ exports.up = function(knex, Promise) {
       table.string('first_name');
       table.string('last_name');
       table.string('email');
-      table.string('status').defaultTo('inactive');
       table.string('access_level').defaultTo('full');
     }),
     knex.schema.createTableIfNotExists('stations', (table) => {
@@ -22,13 +21,13 @@ exports.up = function(knex, Promise) {
     }),
     knex.schema.createTableIfNotExists('trips', (table) => {
       table.increments('id').unsigned().primary();
-      table.string('status');
+      table.string('status').defaultTo(null);
       table.timestamp('start_time');
-      table.timestamp('end_time');
+      table.timestamp('end_time').defaultTo(null);
       table.integer('rider_id').references('members.id').onDelete('CASCADE');
       table.integer('bike_id').references('bikes.id').onDelete('CASCADE');
       table.integer('start_station_id').references('stations.id').onDelete('CASCADE');
-      table.integer('end_station_id').references('stations.id').onDelete('CASCADE');
+      table.integer('end_station_id').references('stations.id').defaultTo(null).onDelete('CASCADE');
     })        
   ]);
 };

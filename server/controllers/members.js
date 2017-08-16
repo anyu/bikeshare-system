@@ -82,11 +82,10 @@ module.exports.deleteMember = (req, res) => {
     });
 };
 
-// TODO: REVIEW
 module.exports.checkRideCount = (req, res) => {
+  console.log('member req params',req.params)
   models.Trip.where({ rider_id: req.params.id }).fetchAll()
     .then((trips) => {
-      console.log('member checkRideCount trips', trips)
       res.status(200).json({ride_count: trips.length});
     })
     .catch((err) => {
@@ -94,16 +93,14 @@ module.exports.checkRideCount = (req, res) => {
     });
 };
 
-// TODO: REVIEW
 module.exports.checkStatus = (req, res) => {
-  models.Trip.where({ rider_id: req.params.id }).fetch()
+  models.Trip.where({ rider_id: req.params.id, status: 'ongoing'}).fetch()
   .then((trip) => {
-    console.log('member checkStatus trip', trip)
-    var isOnTrip = false;
-    if (trip && trip.attributes.status === "ongoing") {
+    let isOnTrip = false;
+    if (trip) {
       isOnTrip = true;
     }
-    res.status(200).json({status: isOnTrip});
+    res.status(200).json({'is_on_trip': isOnTrip});
   })
   .catch((err) => {
     res.sendStatus(404);
