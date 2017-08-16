@@ -64,15 +64,20 @@ module.exports.updateBike = (req, res) => {
     });
 };
 
-// TODO: ADDRESS CASE OF BIKE CURRENTLY BEING RIDDEN
+// TODO: REVIEW
 module.exports.deleteBike = (req, res) => {
-  models.Bike.where({ id: req.params.id }).fetch()
-  .then((bike) => {
-    return bike.destroy()     
+  models.Trip.where({ bike_id: req.params.id, status: 'ongoing' }).fetch()
+  .then((trip) => {
+    if (trip) {
+      res.status(403).json("This bike is currently in use and can't be removed.");
+    } else {
+      models.Bike.where({ id: req.params.id }).fetch
+      return bike.destroy()  
+      .then(() => {
+        res.status(200).json('Bike deleted');
+      })
+    }
   })     
-  .then(() => {
-    res.status(200).json('Bike deleted');
-  })
   .catch((err) => {
     res.sendStatus(404);
   });
@@ -104,14 +109,16 @@ module.exports.checkDockedStation = (req, res) => {
     });
 };
 
-// TO UPDATE
+// TO REVIEW
 module.exports.checkLastRider = (req, res) => {
-  models.Bike.where({ id: req.params.id }).fetch({ columns: ['last_rider_id'] })
-    .then((bikeLastRider) => {
-      if (!bikeLastRider) {
-        throw bikeLastRider;
+  models.Trip.where({ bike_id: req.params.id }).fetchAll()
+    .then((trip) => {
+      if (!trip) {
+        throw trip;
       }
-      res.status(200).json(bikeLastRider);
+      trip.orderBy('end_time', 'DESC');
+      console.log('bikes checkLastRider trip', trip)
+      res.status(200).json(trip.attributes.rider_id);
     })
     .catch((err) => {
       res.sendStatus(404);

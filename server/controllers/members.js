@@ -82,32 +82,32 @@ module.exports.deleteMember = (req, res) => {
     });
 };
 
-// TODO: FIX
+// TODO: REVIEW
 module.exports.checkRideCount = (req, res) => {
-  models.Member.where({ id: req.params.id }).fetch({ columns: ['ride_count'] })
-    .then((memberRideCount) => {
-      if (!memberRideCount) {
-        throw memberRideCount;
-      } 
-      res.status(200).json(memberRideCount);
+  models.Trip.where({ rider_id: req.params.id }).fetchAll()
+    .then((trips) => {
+      console.log('member checkRideCount trips', trips)
+      res.status(200).json({ride_count: trips.length});
     })
     .catch((err) => {
       res.sendStatus(404);
     });
 };
 
-// TODO: FIX
+// TODO: REVIEW
 module.exports.checkStatus = (req, res) => {
-  models.Member.where({ id: req.params.id }).fetch({ columns: ['status'] })
-  .then((memberStatus) => {
-    if (!memberStatus) {
-      throw memberStatus;
-    } 
-    res.status(200).json(memberStatus);
+  models.Trip.where({ rider_id: req.params.id }).fetch()
+  .then((trip) => {
+    console.log('member checkStatus trip', trip)
+    var isOnTrip = false;
+    if (trip && trip.attributes.status === "ongoing") {
+      isOnTrip = true;
+    }
+    res.status(200).json({status: isOnTrip});
   })
-    .catch((err) => {
-      res.sendStatus(404);
-    });
+  .catch((err) => {
+    res.sendStatus(404);
+  });
 };
 
 module.exports.toggleAccessLevel = (req, res) => {

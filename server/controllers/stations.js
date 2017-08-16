@@ -133,92 +133,80 @@ module.exports.checkIfEmpty = (req, res) => {
   }); 
 };
 
-// TODO: FIX
+// TODO: REVIEW
 module.exports.rentBike = (req, res) => {
-  models.Station.where({ id: req.params.id }).fetch()
-    .then((station) => {
-      if (!station) {
-        throw station;
-      }
-      // if station has available bikes
-      if (station.attributes.bike_count > 0) {
-        models.Member.where({id: req.body.member_id}).fetch()
-        .tap((member) => {
-          // if member can rent bikes
-          if (member.attributes.access_level === 'full') {
-            models.Bike.where({id: req.body.bike_id}).fetch()
-            .tap((bike) => {
-              // if bike is available
-              if (bike.attributes.is_available) {
-                var memberParams = {'status': 'active'};
-                member.save(memberParams, {method: 'update',patch: true});
-              } else {
-                res.send("This bike is unavailable for rent.");
-              }
-            }).tap(() => {
-                var stationParams = {'bike_count': station.attributes.bike_count-1};
-                station.save(stationParams, {method: 'update',patch: true});
-            }).tap((bike) => {
-                var bikeParams = {'docked_station_id': null, 'active_rider_id': parseInt(req.body.member_id), 'is_available': false};
-                return bike.save(bikeParams, {method: 'update',patch: true})
-                .then(() => {                                
-                  res.status(200).json({bike, station, member});
-                }).catch((err) => {
-                  res.sendStatus(404);
-                });
+ // if station has available bikes
+  models.Bike.where({ docked_station_id: req.params.id, status: "available" }).fetch()
+  .tap((bike) => {
+    if (bike) {
+      models.Member.where({id: req.body.member_id}).fetch()
+      .tap((member) => {
+        // if member can rent bikes
+        if (member.attributes.access_level === 'full') {
+          var bikeStatus = {'status': 'unavailable', docked_station_id: null};
+          bike.save(bikeStatus, {method: 'update',patch: true})
+          .then(() => {
+            models.Trip.forge({ 
+              status: "ongoing", 
+              start_time: new Date().toISOString(),
+              rider_id: req.body.member_id,
+              start_station_id: req.params.id,
+              bike_id: bike.attributes.id
+            }).save()
+            .then(() => {                                
+              res.status(200).json({bike, trip});
             }).catch((err) => {
               res.sendStatus(404);
             });
-          } else {
-            res.status(403).json("This member cannot rent bikes.");
-          }
-        }).catch((err) => {
-          res.sendStatus(404);
-        });
-      } else {
-        res.status(403).json("There are no available bikes to rent at this station.");
-      }
-    }).catch((err) => {
-      res.sendStatus(404);
-    });
+          }).catch((err) => {
+            res.sendStatus(404);
+          });
+        } else {
+          res.status(403).json("This member cannot rent bikes.");
+        }
+      }).catch((err) => {
+        res.sendStatus(404);
+      });
+    } else {
+      res.status(403).json("There are no available bikes to rent at this station.");
+    }
+  }).catch((err) => {
+    res.sendStatus(404);
+  });
 };
 
-// TODO: FIX
+
+// TODO: REVIEW
 module.exports.returnBike = (req, res) => {
-  models.Station.where({ id: req.params.id }).fetch()
-    .then((station) => {
-      if (!station) {
-        throw station;
-      }
+  models.Bike.where({ docked_station_id: req.params.id }).fetchAll()
+  .tap((bikes) => {
+    models.Station.where({ id: req.params.id }).fetch()
+    .tap((station) => {
       // if station has available docks
-      if (station.attributes.bike_count < station.attributes.max_capacity) {
-        models.Member.where({id: req.body.member_id}).fetch()
-        .tap((member) => {
-            models.Bike.where({id: req.body.bike_id}).fetch()
-            .tap((bike) => {
-                var memberParams = {'ride_count': member.attributes.ride_count+1, 'status': 'inactive'};
-                member.save(memberParams, {method: 'update',patch: true});
-            }).tap(() => {
-                var stationParams = {'bike_count': station.attributes.bike_count+1};
-                station.save(stationParams, {method: 'update',patch: true});
-            }).tap((bike) => {
-                var bikeParams = {'docked_station_id': station.attributes.id, 'active_rider_id': null, 'last_rider_id': parseInt(req.body.member_id), 'is_available': true};
-                return bike.save(bikeParams, {method: 'update',patch: true})
-                .then(() => {                                
-                  res.status(200).json({bike, station, member});
-                }).catch((err) => {
-                  res.sendStatus(404);
-                });
+      if (bikes.length < station.attributes.max_capacity) {
+        models.Bike.where({id: req.body.bike_id}).fetch()
+        .tap((bike) => {
+          var bikeParams = {'docked_station_id': req.params.id, 'status': 'available'};
+          bike.save(bikeParams, {method: 'update',patch: true})
+          .tap(() => {   
+            models.Trip.where({id: req.body.trip_id}).fetch()
+            .tap((trip) => {
+              var tripParams = {'status': 'ended', 'end_time': new Date().toISOString(), end_station_id: req.params.id};
+              trip.save(bikeParams, {method: 'update',patch: true})
+            }).then(() => {                                
+              res.status(200).json({bike, trip});
             }).catch((err) => {
               res.sendStatus(404);
             });
-        }).catch((err) => {
-          res.sendStatus(404);
-        });
+          }).catch((err) => {
+            res.sendStatus(404);
+          })
+        }) 
       } else {
         res.status(403).json("This station is full. Please return your bike at another station.");
       }
     }).catch((err) => {
       res.sendStatus(404);
     });
+  });
 };
