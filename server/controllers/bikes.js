@@ -66,20 +66,23 @@ module.exports.updateBike = (req, res) => {
 
 module.exports.deleteBike = (req, res) => {
   models.Trip.where({ bike_id: req.params.id, status: 'ongoing' }).fetch()
-  .then((trip) => {
+  .then((trip) => {    
     if (trip) {
-      console.log('trip', trip)
       res.status(403).json("This bike is currently in use and can't be removed.");
     } else {
-      console.log('got to bikeeee')
       models.Bike.where({ id: req.params.id }).fetch()
       .then((bike) => { 
-        console.log('bike', bike)
+        if (!bike) {
+          throw bike;
+        }
         return bike.destroy()  
       })
       .then(() => {
         res.status(200).json('Bike deleted');
       })
+      .catch((err) => {
+        res.sendStatus(404);
+      });
     }
   })     
   .catch((err) => {
