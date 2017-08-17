@@ -17,17 +17,34 @@ From within the root directory:
 npm install
 ```
 
+## Database creation/initialization
+
+Start up `postgres`:
+
+```
+psql postgres
+```
+or if that doesn't work, try:
+```
+pg_ctl -D /usr/local/var/postgres -l /usr/local/var/postgres/server.log start
+```
+
+In postgres, create a local database:
+```
+CREATE DATABASE databaseName;
+```
+
+Check the user associated with the database:
+
+```
+\l
+```
+
 Duplicate the example.env file and rename it to:
 ```
 .env
 ```
-
-## Database initialization/creation
-
-Ensure `postgres` is running.
-
-Create DB..
-
+Replace the contents with your local database info.
 
 ### Run migration & seed data
 
@@ -49,6 +66,7 @@ To run tests:
 ```
 npm run test
 ```
+Note: There's currently no separate DB/migration/seed file for testing, so running these tests will perform rollback/migrate/seed/rollback. You'll have to run migrations/seed the data for development.
 
 ---
 
