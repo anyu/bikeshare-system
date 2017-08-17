@@ -15,6 +15,7 @@ From within the root directory:
 
 ```
 npm install
+npm install --save-dev nodemon  //to autodetect server code changes
 ```
 
 ## Database creation/initialization
