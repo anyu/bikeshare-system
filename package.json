@@ -4,7 +4,7 @@
   "description": "Bike share system",
   "main": "index.js",
   "scripts": {
-    "start": "nodemon server/server",
+    "start": "node server/server",
     "build": "webpack --watch",
     "migrate": "knex migrate:latest",
     "test": "node ./node_modules/mocha/bin/mocha --reporter spec"
