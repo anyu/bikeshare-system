@@ -12,7 +12,7 @@ class Sidebar extends React.Component {
                               'Retrieve list of bikes', 'Check if empty', 'Rent a bike', 'Return a bike'];
     const bikeEndpoints = ['Retrieve all bikes', 'Add a bike', 'Retrieve a bike', 'Update a bike', 'Delete a bike', 'Retrieve availability', 
                            'Retrieve docked station', 'Retrieve last rider'];
-    const tripEndpoints = ['Retrieve all trips', 'Retrieve a trip'];                           
+    const tripEndpoints = ['Retrieve all trips', 'Retrieve a trip', 'Retrieve active trip count', 'Retrieve trip count by year'];                           
 
     return (
         <div className="sidebar">

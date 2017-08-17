@@ -667,6 +667,33 @@ module.exports = {
         "start_station_id": 2,
         "end_station_id": 3
       }`                                               
+    },
+    'Retrieve active trip count':
+    {
+      summary: 'Returns the number of currently active trips.', 
+      method: 'GET',
+      resource_url: '/api/trips/count/active',
+      response: `
+      {
+        "active_trips": 226
+      }`            
+    },
+    'Retrieve trip count by year':
+    {
+      summary: 'Returns the number of currently active trips.', 
+      method: 'GET',
+      resource_url: '/api/trips/count/:year',
+      query_params: [{ 
+        name : 'year',
+        type: 'integer',
+        required: 'required',
+        description: `requested year`,
+        example: 2017
+      }],
+      response: `
+      {
+        "tripcount": 437
+      }`            
     }
   }
 }
