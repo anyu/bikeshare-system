@@ -3,7 +3,7 @@ require('dotenv').config();
 module.exports = {
   text: {
     'Overview' : {
-      summary: 'The CityBike REST API allows you to query information about the members, stations, and bikes in the system. You can also perform operations such as renting and returning bikes.'
+      summary: 'The CityBike REST API allows you to query information about the members, stations, bikes, and trips in the system. You can also perform operations such as renting and returning bikes. And much more!'
     },    
     'Retrieve all members':
       {
@@ -617,6 +617,56 @@ module.exports = {
       {
         "last_rider_id": 626
       }`
-    }                                        
+    },     
+    'Retrieve all trips':
+    {
+      summary: 'Returns all trips in the system.', 
+      method: 'GET',
+      resource_url: '/api/trips',
+      response: `[{
+        "id": 2,
+        "status": "ended",
+        "start_time": "2017-07-17T23:06:14.264Z",
+        "end_time": "2017-08-17T00:06:14.264Z",
+        "rider_id": 11,
+        "bike_id": 86,
+        "start_station_id": 7,
+        "end_station_id": 2
+      },
+      {
+          "id": 3,
+          "status": "ended",
+          "start_time": "2017-05-16T23:06:14.264Z",
+          "end_time": "2017-08-17T07:06:14.264Z",
+          "rider_id": 20,
+          "bike_id": 26,
+          "start_station_id": 6,
+          "end_station_id": 7
+      }]`
+    },
+    'Retrieve a trip':
+    {
+      summary: 'Returns a trip by the given ID.', 
+      method: 'GET',
+      resource_url: '/api/trips/:id',
+      query_params: [{ 
+        name : 'trip_id',
+        type: 'integer',
+        required: 'required',
+        description: `ID associated with trip`,
+        example: 12
+      }],
+      response: `
+      {
+        "id": 1,
+        "status": "ended",
+        "start_time": "2017-07-15T23:06:14.264Z",
+        "end_time": "2017-08-17T04:06:14.264Z",
+        "rider_id": 23,
+        "bike_id": 52,
+        "start_station_id": 2,
+        "end_station_id": 3
+      }`                                               
+    }
   }
 }

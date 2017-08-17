@@ -11,14 +11,13 @@ class Main extends React.Component {
     return (
       <div className="main">
         <h1 className="page_title">{ this.props.currentPage }</h1>
-        <p>{ contentData.text[this.props.currentPage].summary }
+        <p>{ contentData.text[this.props.currentPage].summary }</p>
           { this.props.currentPage === 'Overview' ?
           <div>
             <h4>Database Schema</h4>
             <img src="assets/images/db_schema.png"/>
           </div> : null
           }
-        </p>
         { contentData.text[this.props.currentPage].method ? 
           <div>
             <h2>Method</h2>

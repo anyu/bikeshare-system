@@ -83,7 +83,6 @@ module.exports.deleteMember = (req, res) => {
 };
 
 module.exports.checkRideCount = (req, res) => {
-  console.log('member req params',req.params)
   models.Trip.where({ rider_id: req.params.id }).fetchAll()
     .then((trips) => {
       res.status(200).json({ride_count: trips.length});
