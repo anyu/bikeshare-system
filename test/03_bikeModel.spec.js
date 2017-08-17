@@ -29,18 +29,15 @@ describe('Bike model tests', () => {
       var newBikeID = bikes.length+1;    
       return knex("bikes").insert({
         id: newBikeID,
-        docked_station_id: 4,
-        active_rider_id: 2,
-        last_rider_id: 3
+        status: 'available',
+        docked_station_id: 4
       })
       .then(() => {
         return Bike.where({ id: newBikeID }).fetch()
       })
       .then((result) => {
-        expect(result.get('is_available')).to.equal(true);
+        expect(result.get('status')).to.equal('available');
         expect(result.get('docked_station_id')).to.equal(4);
-        expect(result.get('active_rider_id')).to.equal(2);
-        expect(result.get('last_rider_id')).to.equal(3);
         done();
       })
       .catch((err) => {
@@ -55,14 +52,14 @@ describe('Bike model tests', () => {
         expect(result.get('id')).to.equal(1);
       })
       .then(() => {
-        return Bike.where({ id: 1 }).save({active_rider_id: 4, is_available: false}, { method: 'update' });
+        return Bike.where({ id: 1 }).save({docked_station_id: 1, status: 'unavailable'}, { method: 'update' });
       })
       .then(() => {
         return Bike.where({ id: 1 }).fetch();
       })
       .then((result) => {
-        expect(result.get('active_rider_id')).to.equal(4);
-        expect(result.get('is_available')).to.equal(false);
+        expect(result.get('docked_station_id')).to.equal(1);
+        expect(result.get('status')).to.equal('unavailable');
         done();
       })
       .catch((err) => {

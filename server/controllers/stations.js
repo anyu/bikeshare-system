@@ -198,6 +198,9 @@ module.exports.returnBike = (req, res) => {
           .tap(() => {   
             models.Trip.where({bike_id: req.body.bike_id, status: 'ongoing'}).fetch()
             .tap((trip) => {
+              if (!trip) {
+                throw trip;
+              }
               var tripParams = {'status': 'ended', 'end_time': new Date().toISOString(), end_station_id: req.params.id};
               trip.save(tripParams, {method: 'update',patch: true})
               .tap((trip) => {      
@@ -205,11 +208,15 @@ module.exports.returnBike = (req, res) => {
               }).catch((err) => {
                 res.sendStatus(404);
               });
+            }).catch((err) => {
+              res.sendStatus(404);
             });
           }).catch((err) => {
             res.sendStatus(404);
           })
-        }) 
+        }).catch((err) => {
+          res.sendStatus(404);
+        })
       } else {
         res.status(403).json("This station is full. Please return your bike at another station.");
       }

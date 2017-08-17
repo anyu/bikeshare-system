@@ -29,14 +29,14 @@ describe('Station model tests', () => {
       var newStationID = stations.length+1;    
       return knex("stations").insert({
         id: newStationID,
-        bike_count: 3,
+        zipcode: '94122',
         max_capacity: 30
       })
       .then(() => {
         return Station.where({ id: newStationID }).fetch()
       })
       .then((result) => {
-        expect(result.get('bike_count')).to.equal(3);
+        expect(result.get('zipcode')).to.equal('94122');
         expect(result.get('max_capacity')).to.equal(30);
         done();
       })
@@ -52,13 +52,13 @@ describe('Station model tests', () => {
         expect(result.get('id')).to.equal(1);
       })
       .then(() => {
-        return Station.where({ id: 1 }).save({ bike_count: 17, max_capacity: 30 }, { method: 'update' });
+        return Station.where({ id: 1 }).save({ zipcode: '94107', max_capacity: 30 }, { method: 'update' });
       })
       .then(() => {
         return Station.where({ id: 1 }).fetch();
       })
       .then((result) => {
-        expect(result.get('bike_count')).to.equal(17);
+        expect(result.get('zipcode')).to.equal('94107');
         expect(result.get('max_capacity')).to.equal(30);
         done();
       })

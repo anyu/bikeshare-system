@@ -55,7 +55,7 @@ module.exports = {
           name : 'access_level',
           type: 'string',
           required: 'optional',
-          description: "Whether or not the member can rent a bike. Defaults to 'full' if not specified.",
+          description: "'full' if a member can rent a bike, 'none' if they can't. Defaults to 'full' if not specified.",
           example: 'full'
         }        
       ],
@@ -73,7 +73,7 @@ module.exports = {
         summary: 'Returns a member by the given ID.', 
         method: 'GET',
         resource_url: '/api/members/:id',
-        params: [{ 
+        query_params: [{ 
           name : 'member_id',
           type: 'integer',
           required: 'required',
@@ -94,14 +94,14 @@ module.exports = {
       summary: "Modifies a member by the given ID. Only specified parameters will be updated.",
       method: 'PUT',
       resource_url: '/api/members/:id',
-      params: [{ 
+      query_params: [{ 
         name : 'member_id',
         type: 'integer',
         required: 'required',
         description: `ID associated with member`,
         example: 12
-      },
-      {
+      }],
+      req_body_params: [{ 
         name : 'first_name',
         type: 'string',
         required: 'optional',
@@ -142,7 +142,7 @@ module.exports = {
       summary: 'Removes a member from the system by the given ID.',
       method: 'DELETE',
       resource_url: '/api/members/:id',
-      params: [{ 
+      query_params: [{ 
         name : 'member_id',
         type: 'integer',
         required: 'required',
@@ -156,7 +156,7 @@ module.exports = {
       summary: 'Returns the number of rides taken by the member with the given id.',
       method: 'GET',
       resource_url: '/api/members/:id/ride_count',
-      params: [{ 
+      query_params: [{ 
         name : 'member_id',
         type: 'integer',
         required: 'required',
@@ -173,7 +173,7 @@ module.exports = {
       summary: 'Returns the status of the member with the given id (whether or not the member is currently on a ride)',
       method: 'GET',
       resource_url: '/api/members/:id/status',
-      params: [{ 
+      query_params: [{ 
         name : 'member_id',
         type: 'integer',
         required: 'required',
@@ -185,12 +185,12 @@ module.exports = {
         "status": "active"
       }`
     },
-    'Retrieve access level':
+    'Toggle access level':
     {
-      summary: 'Returns the access level of the member with the given id (their ability to rent bikes)',
+      summary: "Enables/disables a member's ability to rent a bike",
       method: 'POST',
       resource_url: '/api/members/:id/toggle_access_level',
-      params: [{ 
+      query_params: [{ 
         name : 'member_id',
         type: 'integer',
         required: 'required',
@@ -199,7 +199,11 @@ module.exports = {
       }],
       response: `
       {
-        "status": "full"
+        "id": 2,
+        "first_name": "Gunner",
+        "last_name": "VonRueden",
+        "email": "Shanel74@hotmail.com",
+        "access_level": "none"
       }`
     },
     'Retrieve all stations':
@@ -210,12 +214,14 @@ module.exports = {
       response: `[
         {
           "id":1,
-          "bike_count": 0,
+          "name": 'Folsom St & 8th St',
+          "zipcode": '94103',
           "max_capacity": 30
         },
         {
           "id": 2,
-          "bike_count": 33,
+          "name": 'King St & 4th St',
+          "zipcode": '94104',          
           "max_capacity": 50
         }]`
     },   
@@ -224,13 +230,20 @@ module.exports = {
       summary: 'Adds a new station to the system.', 
       method: 'POST',
       resource_url: '/api/stations',
-      params: [{ 
-        name : 'bike_count',
-        type: 'integer',
+      req_body_params: [{ 
+        name : 'name',
+        type: 'string',
         required: 'required',
-        description: 'Number of bikes docked at the station',
-        example: 9
+        description: 'Name of the station (cross streets)',
+        example: 'King St & 4th St'
       },
+      { 
+        name : 'zipcode',
+        type: 'string',
+        required: 'required',
+        description: 'Zipcode where the station is located',
+        example: '94122'
+      },      
       { 
         name : 'max_capacity',
         type: 'integer',
@@ -239,9 +252,10 @@ module.exports = {
         example: 10
       }],
       response: `{
-        "bike_count": "2",
-        "max_capacity": "20",
-        "id": 1
+        "id": 1,        
+        "name": "King St & 4th St",
+        "zipcode": "94122",
+        "max_capacity": "20"
       }`
     },     
     'Retrieve a station':
@@ -258,9 +272,10 @@ module.exports = {
       }],
       response: `
       {
-        "id": 2,
-        "bike_count": 33,
-        "max_capacity": 50
+        "id": 1,        
+        "name": "King St & 4th St",
+        "zipcode": "94122",
+        "max_capacity": "20"
       }` 
     }, 
     'Update a station':
@@ -268,21 +283,27 @@ module.exports = {
       summary: "Modifies a station by the given ID. Only specified parameters will be updated.",      
       method: 'PUT',
       resource_url: '/api/stations/:id',
-      params: [
-      { 
+      query_params: [{ 
         name : 'station_id',
         type: 'integer',
         required: 'required',
         description: 'ID associated with station',
         example: 1
+      }],
+      req_body_params: [{
+        name : 'name',
+        type: 'string',
+        required: 'optional',
+        description: 'Name of the station (cross streets)',
+        example: 'King St & 4th St'
       },
       { 
-        name : 'bike_count',
-        type: 'integer',
+        name : 'zipcode',
+        type: 'string',
         required: 'optional',
-        description: 'Number of bikes docked at the station',
-        example: 9
-      },
+        description: 'Zipcode where the station is located',
+        example: '945122'
+      },      
       { 
         name : 'max_capacity',
         type: 'integer',
@@ -292,9 +313,10 @@ module.exports = {
       }],
       response: `
       {
-        "bike_count": "2",
-        "max_capacity": "20",
-        "id": 1
+        "id": 1,        
+        "name": "King St & 4th St",
+        "zipcode": "94122",
+        "max_capacity": "20"
       }`      
     }, 
     'Delete a station':
@@ -302,7 +324,7 @@ module.exports = {
       summary: 'Removes a station from the system by the given ID.',
       method: 'DELETE',
       resource_url: '/api/stations/:id',
-      params: [{ 
+      query_params: [{ 
         name : 'station_id',
         type: 'integer',
         required: 'required',
@@ -316,7 +338,7 @@ module.exports = {
       summary: 'Returns the number of bikes at the station with the given ID.',
       method: 'GET',
       resource_url: '/api/stations/:id/bike_count',
-      params: [{ 
+      query_params: [{ 
         name : 'station_id',
         type: 'integer',
         required: 'required',
@@ -333,7 +355,7 @@ module.exports = {
       summary: 'Returns all bikes currently docked at the station with the given ID.',
       method: 'GET',
       resource_url: '/api/stations/:id/bikes',
-      params: [{ 
+      query_params: [{ 
         name : 'station_id',
         type: 'integer',
         required: 'required',
@@ -345,12 +367,12 @@ module.exports = {
         "bikeIDs": [11, 27, 31, 37, 164, 175, 194]
       }`
     }, 
-    'Retrieve if station is empty':
+    'Check if empty':
     {
       summary: 'Returns whether or not the station with the given ID is empty.',
       method: 'GET',
       resource_url: '/api/stations/:id/is_empty',
-      params: [{ 
+      query_params: [{ 
         name : 'station_id',
         type: 'integer',
         required: 'required',
@@ -359,7 +381,7 @@ module.exports = {
       }],
       response: 
       `{
-        "bike_count": 33
+        "is_empty": false
       }`
     }, 
     'Rent a bike':
@@ -367,44 +389,35 @@ module.exports = {
       summary: 'Endpoint for members to rent a bike at the station with the given ID.',
       method: 'POST',
       resource_url: '/api/stations/:id/rent',
-      params: [{ 
+      query_params: [{
+          name : 'station_id',
+          type: 'integer',
+          required: 'required',
+          description: 'ID of associated with station being rented from',
+          example: 9
+      }],
+      req_body_params: [{ 
         name : 'member_id',
         type: 'integer',
         required: 'required',
-        description: 'ID associated with the member renting the bike',
+        description: 'ID associated with member renting the bike',
         example: 501
-      },
-      { 
-        name : 'station_id',
-        type: 'integer',
-        required: 'required',
-        description: 'ID associated with the station being rented from',
-        example: 9
-      },
-      { 
-        name : 'bike_id',
-        type: 'integer',
-        required: 'required',
-        description: 'ID associated with the bike being rented',
-        example: 5
       }],
       response: `{
         "bike": {
-          "id": 2,
-          "status": "available",
-          "docked_station_id": 1
+          "id": 48,
+          "status": "unavailable",
+          "docked_station_id": null
         },
-        "station": {
-          "id": 2,
-          "bike_count": 3,
-          "max_capacity": 20
-        },
-        "member": {
-          "id": 2,
-          "first_name": "Sage",
-          "last_name": "Orn",
-          "email": "Marisol.Roberts11@yahoo.com",
-          "access_level": "full"
+        "trip": {
+          "id": 501,
+          "status": "ongoing",
+          "start_time": "2017-08-16T23:25:29.204Z",
+          "end_time": null,
+          "rider_id": 8,
+          "bike_id": 48,
+          "start_station_id": 2,
+          "end_station_id": null
         }
       }`
     }, 
@@ -413,21 +426,14 @@ module.exports = {
       summary: 'Endpoint for members to return a bike at the station with the given ID.',
       method: 'POST',
       resource_url: '/api/stations/:id/return',
-      params: [{ 
-        name : 'member_id',
-        type: 'integer',
-        required: 'required',
-        description: 'ID associated with the member returning the bike',
-        example: 501
-      },
-      { 
+      query_params: [{
         name : 'station_id',
         type: 'integer',
         required: 'required',
-        description: 'ID associated with the station the bike is being returned to',
+        description: 'ID of associated with station being rented from',
         example: 9
-      },
-      { 
+      }],      
+      req_body_params: [{ 
         name : 'bike_id',
         type: 'integer',
         required: 'required',
@@ -436,21 +442,19 @@ module.exports = {
       }],
       response: `{
         "bike": {
-          "id": 2,
+          "id": 156,
           "status": "available",
-          "docked_station_id": 1
+          "docked_station_id": "2"
         },
-        "station": {
-          "id": 2,
-          "bike_count": 3,
-          "max_capacity": 20
-        },
-        "member": {
-          "id": 2,
-          "first_name": "Sage",
-          "last_name": "Orn",
-          "email": "Marisol.Roberts11@yahoo.com",
-          "access_level": "full"
+        "trip": {
+          "id": 258,
+          "status": "ended",
+          "start_time": "2017-05-31T23:06:14.265Z",
+          "end_time": "2017-08-16T23:39:32.532Z",
+          "rider_id": 71,
+          "bike_id": 156,
+          "start_station_id": 7,
+          "end_station_id": "2"
         }
       }`
     },   
@@ -459,39 +463,29 @@ module.exports = {
       summary: 'Returns all bikes in the system.',
       method: 'GET',
       resource_url: '/api/bikes',
-      response: `[
-        {
+      response: `[{
           "id":1,
-          "status": true,
+          "status": "available",
           "docked_station_id": 8,
         },
         {
           "id": 2,
-          "name": "Washington & Third",
-          "zipcode": "94506",
-          "status": "available",
-          "docked_station_id": 3
-        }]`
+          "status": "unavailable",
+          "docked_station_id": null
+      }]`
     },   
     'Add a bike':
     {
       summary: 'Adds a new bike to the system.',
       method: 'POST',
       resource_url: '/api/bikes',
-      params: [{ 
+      req_body_params: [{ 
         name : 'status',
         type: 'string',
-        required: 'required',
-        description: 'Whether or not the bike is available for rent',
-        example: "available"
-      },
-      {
-        name : 'name',
-        type: 'integer',
         required: 'optional',
-        description: 'ID of the member currently riding the bike',
-        example: "Washington & Third",
-      },    
+        description: "'available' if the bike can be rented, 'unavailable' if not",
+        example: "available"
+      },         
       { 
         name : 'docked_station_id',
         type: 'integer',
@@ -512,7 +506,7 @@ module.exports = {
       summary: 'Returns a bike by the given ID.', 
       method: 'GET',
       resource_url: '/api/bikes/:id',
-      params: [{ 
+      query_params: [{ 
         name : 'bike_id',
         type: 'integer',
         required: 'required',
@@ -531,14 +525,14 @@ module.exports = {
       summary: "Modifies a bike by the given ID. Only specified parameters will be updated.", 
       method: 'PUT',
       resource_url: '/api/bikes/:id',
-      params: [{ 
+      query_params: [{ 
         name : 'bike_id',
         type: 'integer',
         required: 'required',
         description: 'ID associated with the bike',
         example: 2
-      },
-      { 
+      }],
+      req_body_params: [{       
         name : 'status',
         type: 'string',
         required: 'optional',
@@ -564,7 +558,7 @@ module.exports = {
       summary: 'Removes a bike from the system by the given ID.',
       method: 'DELETE',
       resource_url: '/api/bikes/:id',
-      params: [{ 
+      query_params: [{ 
         name : 'bike_id',
         type: 'integer',
         required: 'required',
@@ -578,7 +572,7 @@ module.exports = {
       summary: 'Returns whether or not the bike with the given ID is available for rent.',
       method: 'GET',
       resource_url: '/api/bikes/:id/availability',
-      params: [{ 
+      query_params: [{ 
         name : 'bike_id',
         type: 'integer',
         required: 'required',
@@ -587,7 +581,7 @@ module.exports = {
       }],
       response: `
       {
-        "is_available": 'true'
+        "status": "unavailable"
       }`
     }, 
     'Retrieve docked station':
@@ -595,7 +589,7 @@ module.exports = {
       summary: 'Returns the station where the bike with the given ID is docked.',
       method: 'GET',
       resource_url: '/api/bikes/:id/station',
-      params: [{ 
+      query_params: [{ 
         name : 'bike_id',
         type: 'integer',
         required: 'required',
@@ -612,7 +606,7 @@ module.exports = {
       summary: 'Returns the last member who rode the bike with the given ID.',
       method: 'GET',
       resource_url: '/api/bikes/:id/last_rider',
-      params: [{ 
+      query_params: [{ 
         name : 'bike_id',
         type: 'integer',
         required: 'required',

@@ -93,6 +93,7 @@ module.exports.deleteBike = (req, res) => {
 module.exports.checkAvailability = (req, res) => {
   models.Bike.where({ id: req.params.id }).fetch({ columns: ['status'] })
     .then((bikeAvailability) => {
+      console.log('bikeAvailability', bikeAvailability)
       if (!bikeAvailability) {
         throw bikeAvailability;
       }

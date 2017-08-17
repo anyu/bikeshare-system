@@ -51,10 +51,8 @@ describe('Bikes API', () => {
 
   it('should accept POST requests to /api/bikes', (done) => {
     let newBike = {
-      is_available: true,
+      status: 'available',
       docked_station_id: 9,
-      active_rider_id: 2,
-      last_rider_id: 3
     }
     request(app)
       .post('/api/bikes')
@@ -62,10 +60,8 @@ describe('Bikes API', () => {
       .send(newBike)
       .expect((res) => {
         res.body = {
-          is_available: res.body.is_available,
-          docked_station_id: res.body.docked_station_id,
-          active_rider_id: res.body.active_rider_id,
-          last_rider_id: res.body.last_rider_id
+          status: 'available',
+          docked_station_id: res.body.docked_station_id
         };
       })
       .expect((201), newBike)
@@ -74,10 +70,8 @@ describe('Bikes API', () => {
 
   it('should accept PUT requests to /api/bikes/:id', (done) => {
     let updatedBike = {
-      is_available: false,
-      docked_station_id: 2,
-      active_rider_id: 8,
-      last_rider_id: 5
+      status: 'unavailable',
+      docked_station_id: 2
     }
     request(app)
       .put('/api/bikes/1')
@@ -85,10 +79,8 @@ describe('Bikes API', () => {
       .send(updatedBike)
       .expect((res) => {
         res.body = {
-          is_available: JSON.parse(res.body.is_available),
-          docked_station_id: JSON.parse(res.body.docked_station_id),
-          active_rider_id: JSON.parse(res.body.active_rider_id),
-          last_rider_id: JSON.parse(res.body.last_rider_id)
+          status: 'unavailable',
+          docked_station_id: JSON.parse(res.body.docked_station_id)
         };
       })
       .expect((200), updatedBike)
@@ -98,7 +90,11 @@ describe('Bikes API', () => {
   it('should accept DELETE requests to /api/bikes/:id',  (done) => {
     request(app)
       .delete('/api/bikes/1')
-      .expect(200)
+      .expect((res) => {
+        res.body = {
+          length: 0
+        };
+      })
       .end(done);
   });
 

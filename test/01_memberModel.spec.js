@@ -33,16 +33,14 @@ describe('Member model tests', () => {
         first_name: 'Tobias',
         last_name: 'Funke',
         email: 'tobs.funke@gmail.com',
-        status: 'inactive',
-        access_level: 'full',
-        ride_count: 0
+        access_level: 'full'
       })
       .then(() => {
         return Member.where({ email: 'tobs.funke@gmail.com' }).fetch()
       })
       .then((result) => {
         expect(result.get('first_name')).to.equal('Tobias');
-        expect(result.get('status')).to.equal('inactive');
+        expect(result.get('access_level')).to.equal('full');
         done();
       })
       .catch((err) => {

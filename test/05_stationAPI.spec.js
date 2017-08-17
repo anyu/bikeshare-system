@@ -51,7 +51,7 @@ describe('Stations API', () => {
 
   it('should accept POST requests to /api/stations', (done) => {
     let newStation = {
-      bike_count: 3,
+      zipcode: '94506',
       max_capacity: 30
     }
     request(app)
@@ -60,7 +60,7 @@ describe('Stations API', () => {
       .send(newStation)
       .expect((res) => {
         res.body = {
-          bike_count: res.body.bike_count,
+          zipcode: res.body.zipcode,
           max_capacity: res.body.max_capacity
         };
       })
@@ -70,7 +70,7 @@ describe('Stations API', () => {
 
   it('should accept PUT requests to /api/stations/:id', (done) => {
     let updatedStation = {
-      bike_count: 4,
+      zipcode: 4,
       max_capacity: 20
     }
     request(app)
@@ -79,7 +79,7 @@ describe('Stations API', () => {
       .send(updatedStation)
       .expect((res) => {
         res.body = {
-          bike_count: res.body.bike_count,
+          zipcode: res.body.zipcode,
           max_capacity: res.body.max_capacity
         };
       })
